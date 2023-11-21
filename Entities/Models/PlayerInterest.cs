@@ -10,8 +10,10 @@ namespace Entities.Models
     [Table("PlayerInterests")]
     public class PlayerInterest
     {
-        [Column("PlayerInterestId")]
-        public Guid Id { get; set; }
+        [ForeignKey(nameof(Player))]
+        public Guid PlayerId { get; set; }
+
+        public Player? Player { get; set; }
 
         [ForeignKey(nameof(Sport))]
         public Guid SportId { get; set; }

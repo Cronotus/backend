@@ -37,7 +37,7 @@ namespace Entities.Models
 
         public int Capacity { get; set; }
 
-        public bool Ended { get; set; }
+        public bool Ended { get; set; } = false;
 
         public ICollection<EventReview>? ReviewsGotten { get; set; }
 

@@ -29,7 +29,7 @@ namespace Entities.Models
         public string? Text { get; set; }
 
         [Required(ErrorMessage = "Comment creation time is required")]
-        public DateTime Time { get; set; }
+        public DateTime Time { get; set; } = DateTime.Now;
 
         public ICollection<Reaction>? Reactions { get; set; }
     }

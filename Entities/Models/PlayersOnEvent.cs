@@ -11,9 +11,9 @@ namespace Entities.Models
     public class PlayersOnEvent
     {
         [ForeignKey(nameof(Player))]
-        public Guid[]? PlayerIds { get; set; }
+        public Guid? PlayerId { get; set; }
 
-        public ICollection<Player>? Players { get; set; }
+        public Player? Player { get; set; }
 
         [ForeignKey(nameof(Event))]
         public Guid EventId { get; set; }
