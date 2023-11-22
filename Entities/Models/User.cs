@@ -37,8 +37,6 @@ namespace Entities.Models
 
         public ICollection<Review>? ReviewsMade { get; set; }
 
-        public ICollection<UserReview>? ReviewsReceived { get; set; }
-
         public ICollection<Comment>? CommentsMade { get; set; }
 
         public ICollection<Reaction>? ReactionsMade { get; set; }

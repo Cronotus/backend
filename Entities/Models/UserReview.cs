@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 namespace Entities.Models
 {
     [Table("UserReviews")]
+    [Keyless]
     public class UserReview
     {
         [ForeignKey(nameof(Review))]

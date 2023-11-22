@@ -17,7 +17,5 @@ namespace Entities.Models
         public Guid UserId { get; set; }
 
         public User? User { get; set; }
-
-        public ICollection<PlayerInterest>? PlayerInterests { get; set; }
     }
 }

@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Entities.Models
 {
     [Table("PlayerInterests")]
+    [Keyless]
     public class PlayerInterest
     {
         [ForeignKey(nameof(Player))]

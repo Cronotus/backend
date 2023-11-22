@@ -13,7 +13,8 @@ namespace Cronotus.ContextFactory
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json").Build();
 
-            var builder = new DbContextOptionsBuilder<RepositoryContext>().UseSqlServer(config.GetConnectionString("sqlConnection"));
+            var builder = new DbContextOptionsBuilder<RepositoryContext>().UseSqlServer(config.GetConnectionString("sqlConnection"),
+                b => b.MigrationsAssembly("Cronotus"));
 
             return new RepositoryContext(builder.Options);
         }

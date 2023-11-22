@@ -39,8 +39,6 @@ namespace Entities.Models
 
         public bool Ended { get; set; } = false;
 
-        public ICollection<EventReview>? ReviewsGotten { get; set; }
-
         public ICollection<Comment>? CommentsGotten { get; set; }
 
         public ICollection<Player>? PlayersPresent { get; set; }
