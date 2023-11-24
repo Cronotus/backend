@@ -12,8 +12,14 @@ LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentD
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIIS();
 builder.Services.ConfigureLoggerService();
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().
+    AddApplicationPart(typeof(Cronotus.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
 
@@ -36,6 +42,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
