@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cronotus.Presentation</name>
+    </assembly>
+    <members>
+        <member name="M:Cronotus.Presentation.Controllers.AuthenticationController.RegisterUser(Shared.DataTransferObjects.UserForRegistrationDto)">
+            <summary>
+            Registers a new user
+            </summary>
+            <param name="userForRegistration"></param>
+            <response code="201">User created successfully</response>
+            <response code="400">A bad request was sent and user creation was unsuccessfull</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.AuthenticationController.Authenticate(Shared.DataTransferObjects.UserForAuthenticationDto)">
+            <summary>
+            Logs in a user
+            </summary>
+            <param name="userForAuthentication"></param>
+            <response code="200">Login was successfull</response>
+            <response code="401">The credentials were incorrect thus the login failed</response>
+        </member>
+    </members>
+</doc>
