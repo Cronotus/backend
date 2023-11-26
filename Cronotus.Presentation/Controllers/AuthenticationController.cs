@@ -40,8 +40,9 @@ namespace Cronotus.Presentation.Controllers
                 return Unauthorized();
             }
 
-            var token = await _service.AuthenticationService.CreateToken();
-            return Ok(new { Token = token });
+            var tokenDto = await _service.AuthenticationService.CreateToken(populateExp: true);
+
+            return Ok(tokenDto);
         }
     }
 }
