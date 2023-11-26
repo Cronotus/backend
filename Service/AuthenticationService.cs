@@ -90,13 +90,13 @@ namespace Service
                 new Claim(ClaimTypes.Name, _user?.UserName ?? "")
             };
 
-            var id = await _userManager.GetUserIdAsync(_user);
+            var id = await _userManager.GetUserIdAsync(_user!);
             if (!string.IsNullOrWhiteSpace(id))
             {
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, id));
             }
 
-            var roles = await _userManager.GetRolesAsync(_user);
+            var roles = await _userManager.GetRolesAsync(_user!);
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));

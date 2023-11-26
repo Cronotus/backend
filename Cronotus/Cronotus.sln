@@ -13,13 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "..\Entities\Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "..\Repository\Repository.csproj", "{6D0183A4-EC8D-4776-865D-B90B47596535}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "..\Service\Service.csproj", "{A5B022D8-54D3-4762-93EC-43C1DEB183DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "..\Service\Service.csproj", "{A5B022D8-54D3-4762-93EC-43C1DEB183DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Contracts", "..\Service.Contracts\Service.Contracts.csproj", "{2DC76FDE-59B0-4496-A94A-665F3D26E01B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contracts", "..\Service.Contracts\Service.Contracts.csproj", "{2DC76FDE-59B0-4496-A94A-665F3D26E01B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cronotus.Presentation", "..\Cronotus.Presentation\Cronotus.Presentation.csproj", "{1074C587-9746-4D8F-B0AC-B53F89C6F34F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cronotus.Presentation", "..\Cronotus.Presentation\Cronotus.Presentation.csproj", "{1074C587-9746-4D8F-B0AC-B53F89C6F34F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\Shared\Shared.csproj", "{D42F1151-A6CC-4857-8FFE-65A7DDF0C0ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.csproj", "{D42F1151-A6CC-4857-8FFE-65A7DDF0C0ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
