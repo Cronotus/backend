@@ -30,5 +30,18 @@ namespace Cronotus.Presentation.Controllers
 
             return StatusCode(201);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto userForAuthentication)
+        {
+            var result = await _service.AuthenticationService.ValidateUser(userForAuthentication);
+            if (!result)
+            {
+                return Unauthorized();
+            }
+
+            var token = await _service.AuthenticationService.CreateToken();
+            return Ok(new { Token = token });
+        }
     }
 }
