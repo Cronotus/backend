@@ -18,7 +18,7 @@ namespace Entities.Models
         public Review? Review { get; set; }
 
         [ForeignKey(nameof(User))]
-        public Guid TargetId { get; set; }
+        public string? TargetId { get; set; }
 
         public User? Target { get; set; }
     }
