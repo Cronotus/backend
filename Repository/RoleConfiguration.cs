@@ -24,6 +24,11 @@ namespace Repository
                 {
                     Name = "Player",
                     NormalizedName = "PLAYER"
+                },
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
                 });
         }
     }
