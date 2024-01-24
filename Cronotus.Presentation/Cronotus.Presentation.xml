@@ -20,5 +20,15 @@
             <response code="200">Login was successfull</response>
             <response code="401">The credentials were incorrect thus the login failed</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.GetProfile(System.Guid)">
+            <summary>
+            Gets a profile by id
+            </summary>
+            <param name="id"></param>
+            <returns>A single user profile.</returns>
+            <response code="200">User profile returned successfully</response>
+            <response code="404">User was not found by the given id.</response>
+            <response code="500">An internall server error occured and the request was unsuccessful.</response>
+        </member>
     </members>
 </doc>
