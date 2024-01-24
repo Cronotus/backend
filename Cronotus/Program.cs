@@ -1,7 +1,10 @@
 using Cronotus.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
-using LoggerService;
 using NLog;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
+using Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +24,27 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureSwagger();
 
-builder.Services.AddControllers().
+NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
+    (NewtonsoftJsonPatchInputFormatter)new ServiceCollection()
+    .AddLogging()
+    .AddMvc()
+    .AddNewtonsoftJson()
+    .Services.BuildServiceProvider()
+    .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
+    .OfType<NewtonsoftJsonInputFormatter>().First();
+
+builder.Services.AddControllers(config =>
+{
+    config.RespectBrowserAcceptHeader = true;
+    config.ReturnHttpNotAcceptable = true;
+    config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
+}).
     AddApplicationPart(typeof(Cronotus.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
 
 if (app.Environment.IsDevelopment())
 {

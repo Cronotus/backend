@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects;
 
 
 namespace Cronotus.Presentation.Controllers
@@ -39,6 +41,30 @@ namespace Cronotus.Presentation.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+
+        /// <summary>
+        /// Partially updates a profile
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="patchDoc"></param>
+        /// <returns>No return object</returns>
+        /// <response code="204">The request was successful and the object was partially updated.</response>
+        /// <response code="400">The patch document is null, the update was not successful.</response>
+        [HttpPatch("{id:guid}")]
+        public IActionResult PartiallyUpdateProfile(Guid id, [FromBody] JsonPatchDocument<ProfileForUpdateDto> patchDoc)
+        {
+            if (patchDoc is null)
+                return BadRequest("patchDoc object sent from client is null.");
+
+            var result = _service.ProfileService.GetProfileForPatch(id, trackChanges: true);
+
+            patchDoc.ApplyTo(result.profileToPatch);
+
+            _service.ProfileService.SaveChangesForPatch(result.profileToPatch, result.userEntity);
+
+            return NoContent();
+
         }
     }
 }

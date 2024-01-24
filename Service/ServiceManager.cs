@@ -20,7 +20,7 @@ namespace Service
             IConfiguration configuration)
         {
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, configuration));
-            _profileService = new Lazy<IProfileService>(() => new ProfileService(repositoryManager, logger));
+            _profileService = new Lazy<IProfileService>(() => new ProfileService(repositoryManager, mapper, logger));
         }
 
         public IProfileService ProfileService => _profileService.Value;

@@ -9,6 +9,8 @@ namespace Cronotus
         public MappingProfile()
         {
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<ProfileForUpdateDto, User>();
+            CreateMap<ProfileForUpdateDto, User>().ReverseMap();
         }
     }
 }
