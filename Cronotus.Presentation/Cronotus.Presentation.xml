@@ -20,5 +20,34 @@
             <response code="200">Login was successfull</response>
             <response code="401">The credentials were incorrect thus the login failed</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.GetProfile(System.Guid)">
+            <summary>
+            Gets a profile by id
+            </summary>
+            <param name="id"></param>
+            <returns>A single user profile.</returns>
+            <response code="200">User profile returned successfully</response>
+            <response code="404">User was not found by the given id.</response>
+            <response code="500">An internall server error occured and the request was unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.PartiallyUpdateProfile(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Shared.DataTransferObjects.ProfileForUpdateDto})">
+            <summary>
+            Partially updates a profile
+            </summary>
+            <param name="id"></param>
+            <param name="patchDoc"></param>
+            <returns>No return object</returns>
+            <response code="204">The request was successful and the object was partially updated.</response>
+            <response code="400">The patch document is null, the update was not successful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfile(System.Guid)">
+            <summary>
+            Deletes a profile by id
+            </summary>
+            <param name="id"></param>
+            <returns>No return object.</returns>
+            <response code="204">The profile was deleted successfully.</response>
+            <response code="500">There was an internal server error, the request was unsuccessful.</response>
+        </member>
     </members>
 </doc>

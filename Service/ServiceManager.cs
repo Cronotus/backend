@@ -10,6 +10,7 @@ namespace Service
     public sealed class ServiceManager : IServiceManager
     {
         private readonly Lazy<IAuthenticationService> _authenticationService;
+        private readonly Lazy<IProfileService> _profileService;
 
         public ServiceManager(
             IRepositoryManager repositoryManager,
@@ -19,8 +20,10 @@ namespace Service
             IConfiguration configuration)
         {
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, configuration));
+            _profileService = new Lazy<IProfileService>(() => new ProfileService(repositoryManager, mapper, logger));
         }
 
+        public IProfileService ProfileService => _profileService.Value;
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
     }
 }

@@ -8,6 +8,7 @@ namespace Contracts
 {
     public interface IRepositoryManager
     {
+        IProfileRepository Profile { get; }
         void Save();
     }
 }

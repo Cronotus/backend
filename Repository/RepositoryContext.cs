@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Repository
 {
@@ -13,7 +14,6 @@ namespace Repository
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
             builder.ApplyConfiguration(new RoleConfiguration());
         }
 
