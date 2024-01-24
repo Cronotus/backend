@@ -66,5 +66,26 @@ namespace Cronotus.Presentation.Controllers
             return NoContent();
 
         }
+        
+        /// <summary>
+        /// Deletes a profile by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>No return object.</returns>
+        /// <response code="204">The profile was deleted successfully.</response>
+        /// <response code="500">There was an internal server error, the request was unsuccessful.</response>
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteProfile(Guid id)
+        {
+            try
+            {
+                _service.ProfileService.DeleteProfile(id, trackChanges: false);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
     }
 }

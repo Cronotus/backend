@@ -10,6 +10,8 @@ namespace Repository
         {
         }
 
+        public void DeleteProfile(User user) => Delete(user);
+
         public User? GetProfile(Guid id, bool trackChanges) =>
             FindByCondition(u => u.Id.ToString() == id.ToString(), trackChanges)
                 .SingleOrDefault();

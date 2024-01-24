@@ -40,5 +40,14 @@
             <response code="204">The request was successful and the object was partially updated.</response>
             <response code="400">The patch document is null, the update was not successful.</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfile(System.Guid)">
+            <summary>
+            Deletes a profile by id
+            </summary>
+            <param name="id"></param>
+            <returns>No return object.</returns>
+            <response code="204">The profile was deleted successfully.</response>
+            <response code="500">There was an internal server error, the request was unsuccessful.</response>
+        </member>
     </members>
 </doc>

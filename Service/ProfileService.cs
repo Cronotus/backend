@@ -19,6 +19,17 @@ namespace Service
             _logger = logger;
         }
 
+        public void DeleteProfile(Guid id, bool trackChanges)
+        {
+            var profile = _repositoryManager.Profile.GetProfile(id, trackChanges);
+
+            if (profile is null)
+                throw new Exception($"Profile with id: {id} doesn't exist in the database.");
+
+            _repositoryManager.Profile.DeleteProfile(profile);
+            _repositoryManager.Save();
+        }
+
         public async Task<ProfileForReturnDto?> GetProfileAsync(Guid id, bool trackChanges)
         {
             try
