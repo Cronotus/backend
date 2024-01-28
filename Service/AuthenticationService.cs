@@ -111,7 +111,7 @@ namespace Service
 
             var tokenOptions = new JwtSecurityToken
             (
-                issuer: jwtSettings.GetSection("validIssuer").Value,
+                issuer: jwtSettings.GetSection("validIssuer").Value ?? "CronotusAPI",
                 audience: jwtSettings.GetSection("validAudience").Value,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
@@ -159,5 +159,19 @@ namespace Service
             return principal;
         }
 
+        public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
+        {
+            var principal = GetClaimsPrincipalFromExpiredToken(tokenDto.AccessToken);
+
+            var user = await _userManager.FindByNameAsync(principal.Identity!.Name!);
+            if (user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                throw new SecurityTokenException("Invalid token. The tokenDto has some invalid values.");
+            }
+
+            _user = user;
+
+            return await CreateToken(populateExp: false);
+        }
     }
 }
