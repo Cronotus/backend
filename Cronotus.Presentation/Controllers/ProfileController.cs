@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -7,6 +8,7 @@ using Shared.DataTransferObjects;
 namespace Cronotus.Presentation.Controllers
 {
     [Route("api/profile")]
+    [Authorize(Roles = "Administrator, User")]
     [ApiController]
     public class ProfileController : ControllerBase
     {

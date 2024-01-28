@@ -49,5 +49,12 @@
             <response code="204">The profile was deleted successfully.</response>
             <response code="500">There was an internal server error, the request was unsuccessful.</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.TokenController.Refresh(Shared.DataTransferObjects.TokenDto)">
+            <summary>
+            Creates a new token set
+            </summary>
+            <param name="tokenDto"></param>
+            <returns>TokenDto object containing an acces token and a refresh token.</returns>
+        </member>
     </members>
 </doc>
