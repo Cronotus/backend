@@ -24,9 +24,47 @@
             <summary>
             Returns a preview of all events
             </summary>
-            <returns code="200">The request was successful.</returns>
-            <returns code="500">There was an internal server error thus the request was unsuccessful.</returns>
+            <response code="200">The request was successful.</response>
+            <response code="500">There was an internal server error thus the request was unsuccessful.</response>
             <returns>An array of event previews</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.GetEvent(System.Guid)">
+            <summary>
+            Returns a single event by id
+            </summary>
+            <param name="id"></param>
+            <response code="200">The request was successful and the event by the given id was returned.</response>
+            <response code="404">The event by the given id was not found.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.CreateEvent(Shared.DataTransferObjects.EventForCreationDto)">
+            <summary>
+            Creates a new event
+            </summary>
+            <param name="eventDto"></param>
+            <response code="201">The event was successfully created.</response>
+            <response code="404">No sport/organizer was found to be bounded to event. Event creation failed.</response> 
+            <response code="400">The input object was not in acceptable form causing a bad request.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.DeleteEvent(System.Guid)">
+            <summary>
+            Deletes an event by id
+            </summary>
+            <param name="id"></param>
+            <response code="204">The event was deleted successfully.</response>
+            <response code="404">The event by the given id does not exist. Could not be deleted.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns></returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.OrganizerController.CreateOrganizer(Shared.DataTransferObjects.OrganizerForCreationDto)">
+            <summary>
+            Creates a new organizer
+            </summary>
+            <param name="organizerDto"></param>
+            <returns code="201">The object was created successfully.</returns>
+            <returns code="400">Bad request sent. The request was not successful.</returns>
+            <returns code="409">The request was not successful because an organizer already exists with the given user id.</returns>
         </member>
         <member name="M:Cronotus.Presentation.Controllers.ProfileController.GetProfile(System.Guid)">
             <summary>

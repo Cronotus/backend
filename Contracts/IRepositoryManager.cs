@@ -4,6 +4,8 @@
     {
         IProfileRepository Profile { get; }
         IEventRepository Event { get; }
+        IOrganizerRepository Organizer { get; }
+        ISportRepositry Sport { get; }
         void Save();
         Task SaveAsync();
     }

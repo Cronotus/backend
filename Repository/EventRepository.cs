@@ -10,9 +10,17 @@ namespace Repository
         {
         }
 
+        public void CreateEvent(Event eventEntity) => Create(eventEntity);
+
+        public void DeleteEvent(Event eventEntity) => Delete(eventEntity);
+
         public async Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
                 .OrderBy(e => e.StartDate)
                 .ToListAsync();
+
+        public async Task<Event?> GetEventAsync(Guid eventId, bool trackChanges) =>
+            await FindByCondition(e => e.Id.ToString() == eventId.ToString(), trackChanges)
+                .SingleOrDefaultAsync();
     }
 }

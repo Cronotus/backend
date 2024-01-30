@@ -5,5 +5,6 @@
         IProfileService ProfileService { get; }
         IEventService EventService { get; }
         IAuthenticationService AuthenticationService { get; }
+        IOrganizerService OrganizerService { get; }
     }
 }
