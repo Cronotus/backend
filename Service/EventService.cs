@@ -111,7 +111,18 @@ namespace Service
                     return null;
                 }
 
-                var result = _mapper.Map<EventForReturnDto>(eventEntity);
+                var result = new EventForReturnDto
+                {
+                    Id = eventEntity.Id,
+                    SportId = eventEntity.SportId,
+                    OrganizerId = eventEntity.OrganizerId,
+                    Name = eventEntity.Name!,
+                    StartDate = eventEntity.StartDate,
+                    capacity = eventEntity.Capacity,
+                    isEnded = eventEntity.Ended,
+                    Description = eventEntity.Description!,
+                    Location = eventEntity.Location!
+                };
                 return result;
             }
             catch (Exception ex)
@@ -119,6 +130,25 @@ namespace Service
                 _logger.LogError($"Something went wrong in the {nameof(GetEventAsync)} method: {ex}");
                 throw;
             }
+        }
+
+        public (EventForUpdateDto eventForUpdateDto, Event eventEntity) GetEventForPatch(Guid id, bool trackChanges)
+        {
+            var eventEntity = _repository.Event.GetEvent(id, trackChanges);
+            if (eventEntity is null)
+            {
+                _logger.LogError($"Event with id: {id} doesn't exist in the database.");
+                throw new EventNotFoundException($"Event with id: {id} doesn't exist in the database.");
+            }
+
+            var eventToPatch = _mapper.Map<EventForUpdateDto>(eventEntity);
+            return (eventToPatch, eventEntity);
+        }
+
+        public void SaveChangesForPatch(EventForUpdateDto eventToPatch, Event eventEntity)
+        {
+            _mapper.Map(eventToPatch, eventEntity);
+            _repository.Save();
         }
     }
 }

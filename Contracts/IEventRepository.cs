@@ -6,6 +6,7 @@ namespace Contracts
     {
         Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges);
         Task<Event?> GetEventAsync(Guid eventId, bool trackChanges);
+        Event? GetEvent(Guid eventId, bool trackChanges);
         void CreateEvent(Event eventEntity);
         void DeleteEvent(Event eventEntity);
     }

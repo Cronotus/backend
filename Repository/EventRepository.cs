@@ -19,6 +19,10 @@ namespace Repository
                 .OrderBy(e => e.StartDate)
                 .ToListAsync();
 
+        public Event? GetEvent(Guid eventId, bool trackChanges) => 
+            FindByCondition(e => e.Id.ToString() == eventId.ToString(), trackChanges)
+            .SingleOrDefault();
+
         public async Task<Event?> GetEventAsync(Guid eventId, bool trackChanges) =>
             await FindByCondition(e => e.Id.ToString() == eventId.ToString(), trackChanges)
                 .SingleOrDefaultAsync();

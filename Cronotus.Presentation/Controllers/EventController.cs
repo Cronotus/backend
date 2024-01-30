@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -113,6 +114,41 @@ namespace Cronotus.Presentation.Controllers
             try
             {
                 await _serviceManager.EventService.DeleteEvent(id);
+                return NoContent();
+            }
+            catch (EventNotFoundException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Partially updates an event
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="patchDoc"></param>
+        /// <response code="204">The request was successful and the entity got updated.</response>
+        /// <response code="400">The patch document was not sent correctly, the request was unsuccessful.</response>
+        /// <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        /// <returns>No return object</returns>
+        [HttpPatch("{id:guid}")]
+        [Authorize(Roles = "Organizer")]
+        public IActionResult PartiallyUpdateEvent(Guid id, [FromBody] JsonPatchDocument<EventForUpdateDto> patchDoc)
+        {
+            try
+            {
+                if (patchDoc is null)
+                    return BadRequest("patchDoc object sent from client is null.");
+
+                var result = _serviceManager.EventService.GetEventForPatch(id, trackChanges: true);
+                patchDoc.ApplyTo(result.eventForUpdateDto);
+
+                _serviceManager.EventService.SaveChangesForPatch(result.eventForUpdateDto, result.eventEntity);
+
                 return NoContent();
             }
             catch (EventNotFoundException ex)

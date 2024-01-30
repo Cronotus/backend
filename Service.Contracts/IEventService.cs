@@ -1,4 +1,5 @@
-﻿using Shared.DataTransferObjects;
+﻿using Entities.Models;
+using Shared.DataTransferObjects;
 
 namespace Service.Contracts
 {
@@ -8,5 +9,7 @@ namespace Service.Contracts
         Task<EventForReturnDto?> GetEventAsync(Guid eventId, bool trackChanges);
         Task<EventForReturnDto> CreateEvent(EventForCreationDto eventDto);
         Task DeleteEvent(Guid eventId);
+        (EventForUpdateDto eventForUpdateDto, Event eventEntity) GetEventForPatch(Guid id, bool trackChanges);
+        void SaveChangesForPatch(EventForUpdateDto eventToPatch, Event eventEntity);
     }
 }

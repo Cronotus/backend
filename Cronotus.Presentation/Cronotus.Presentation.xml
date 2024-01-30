@@ -57,6 +57,17 @@
             <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
             <returns></returns>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.PartiallyUpdateEvent(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Shared.DataTransferObjects.EventForUpdateDto})">
+            <summary>
+            Partially updates an event
+            </summary>
+            <param name="id"></param>
+            <param name="patchDoc"></param>
+            <response code="204">The request was successful and the entity got updated.</response>
+            <response code="400">The patch document was not sent correctly, the request was unsuccessful.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>No return object</returns>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.OrganizerController.CreateOrganizer(Shared.DataTransferObjects.OrganizerForCreationDto)">
             <summary>
             Creates a new organizer
