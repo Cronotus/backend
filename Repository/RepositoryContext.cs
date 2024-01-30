@@ -15,6 +15,7 @@ namespace Repository
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new SportConfiguration());
         }
 
         public DbSet<Comment> Comments { get; set; }

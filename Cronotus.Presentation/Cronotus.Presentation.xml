@@ -20,6 +20,14 @@
             <response code="200">Login was successfull</response>
             <response code="401">The credentials were incorrect thus the login failed</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.GetAllEvents">
+            <summary>
+            Returns a preview of all events
+            </summary>
+            <returns code="200">The request was successful.</returns>
+            <returns code="500">There was an internal server error thus the request was unsuccessful.</returns>
+            <returns>An array of event previews</returns>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.ProfileController.GetProfile(System.Guid)">
             <summary>
             Gets a profile by id

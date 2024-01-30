@@ -11,6 +11,7 @@ namespace Service
     {
         private readonly Lazy<IAuthenticationService> _authenticationService;
         private readonly Lazy<IProfileService> _profileService;
+        private readonly Lazy<IEventService> _eventService;
 
         public ServiceManager(
             IRepositoryManager repositoryManager,
@@ -21,9 +22,11 @@ namespace Service
         {
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, configuration));
             _profileService = new Lazy<IProfileService>(() => new ProfileService(repositoryManager, mapper, logger));
+            _eventService = new Lazy<IEventService>(() => new EventService(repositoryManager, logger, mapper));
         }
 
         public IProfileService ProfileService => _profileService.Value;
+        public IEventService EventService => _eventService.Value;
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
     }
 }

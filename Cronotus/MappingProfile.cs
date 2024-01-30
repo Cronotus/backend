@@ -11,6 +11,7 @@ namespace Cronotus
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<ProfileForUpdateDto, User>();
             CreateMap<ProfileForUpdateDto, User>().ReverseMap();
+            CreateMap<EventPreviewForReturnDto, Event>();
         }
     }
 }

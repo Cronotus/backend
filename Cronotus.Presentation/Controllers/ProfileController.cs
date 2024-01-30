@@ -8,7 +8,7 @@ using Shared.DataTransferObjects;
 namespace Cronotus.Presentation.Controllers
 {
     [Route("api/profile")]
-    [Authorize(Roles = "Administrator, User")]
+    [Authorize(Roles = "User")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
