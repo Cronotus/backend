@@ -53,7 +53,18 @@ namespace Service
             _repository.Save();
 
 
-            var result = _mapper.Map<EventForReturnDto>(eventEntity);
+            var result = new EventForReturnDto
+            {
+                Id = eventEntity.Id,
+                SportId = eventEntity.SportId,
+                OrganizerId = eventEntity.OrganizerId,
+                Name = eventEntity.Name!,
+                StartDate = eventEntity.StartDate,
+                capacity = eventEntity.Capacity,
+                isEnded = eventEntity.Ended,
+                Description = eventEntity.Description!,
+                Location = eventEntity.Location!
+            };
 
             return result;
             

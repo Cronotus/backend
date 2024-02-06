@@ -20,5 +20,9 @@ namespace Repository
         public async Task<Organizer?> GetOrganizerByUserIdAsync(string id, bool trackChanges) =>
             await FindByCondition(organizer => organizer.UserId == id, trackChanges)
                 .SingleOrDefaultAsync();
+
+        public async Task<Organizer?> GetOrganizerByUserIdAsync(Guid userId, bool trackChanges) =>
+            await FindByCondition(organizer => organizer.UserId!.ToString() == userId.ToString(), trackChanges)
+                .SingleOrDefaultAsync();
     }
 }

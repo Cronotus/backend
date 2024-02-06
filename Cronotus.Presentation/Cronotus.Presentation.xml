@@ -77,6 +77,16 @@
             <returns code="400">Bad request sent. The request was not successful.</returns>
             <returns code="409">The request was not successful because an organizer already exists with the given user id.</returns>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.OrganizerController.GetOrganizerByUserId(System.Guid)">
+            <summary>
+            Returns an organizer by user id
+            </summary>
+            <param name="id"></param>
+            <response code="200">The request was successful.</response>
+            <response code="404">The was no organizer found by the given user id.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>A single organizer.</returns>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.ProfileController.GetProfile(System.Guid)">
             <summary>
             Gets a profile by id
@@ -105,6 +115,24 @@
             <returns>No return object.</returns>
             <response code="204">The profile was deleted successfully.</response>
             <response code="500">There was an internal server error, the request was unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.SportController.GetAllSports">
+            <summary>
+            Returns a list of all sports
+            </summary>
+            <response code="200">The request was successful.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>All sports.</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.SportController.GetSport(System.Guid)">
+            <summary>
+            Returns a single sport by id
+            </summary>
+            <param name="id"></param>
+            <response code="200">The request was successful and the sport was returned.</response>
+            <response code="404">There was no sport found by the given id.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>A single sport.</returns>
         </member>
         <member name="M:Cronotus.Presentation.Controllers.TokenController.Refresh(Shared.DataTransferObjects.TokenDto)">
             <summary>

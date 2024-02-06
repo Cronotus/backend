@@ -54,5 +54,18 @@ namespace Service
 
             return organizerToReturn;
         }
+
+        public async Task<OrganizerDto> GetOrganizerByUserIdAsync(Guid userId, bool trackChanges)
+        {
+            var organizerEntity = await _repository.Organizer.GetOrganizerByUserIdAsync(userId.ToString(), trackChanges);
+            if (organizerEntity is null)
+            {
+                _logger.LogError($"Organizer with user id: {userId} doesn't exist in the database.");
+                throw new OrganizerNotFoundException($"Organizer with user id: {userId} doesn't exist in the database.");
+            }
+
+            var result = _mapper.Map<OrganizerDto>(organizerEntity);
+            return result;
+        }
     }
 }

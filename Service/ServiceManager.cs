@@ -13,6 +13,7 @@ namespace Service
         private readonly Lazy<IProfileService> _profileService;
         private readonly Lazy<IEventService> _eventService;
         private readonly Lazy<IOrganizerService> _organizerService;
+        private readonly Lazy<ISportService> _sportService;
 
         public ServiceManager(
             IRepositoryManager repositoryManager,
@@ -25,11 +26,13 @@ namespace Service
             _profileService = new Lazy<IProfileService>(() => new ProfileService(repositoryManager, mapper, logger));
             _eventService = new Lazy<IEventService>(() => new EventService(repositoryManager, logger, mapper));
             _organizerService = new Lazy<IOrganizerService>(() => new OrganizerService(repositoryManager, userManager, logger, mapper));
+            _sportService = new Lazy<ISportService>(() => new SportService(repositoryManager, logger, mapper));
         }
 
         public IProfileService ProfileService => _profileService.Value;
         public IEventService EventService => _eventService.Value;
         public IOrganizerService OrganizerService => _organizerService.Value;
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
+        public ISportService SportService => _sportService.Value;
     }
 }

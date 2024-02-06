@@ -46,7 +46,33 @@ namespace Cronotus.Presentation.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
-            
+        }
+
+        /// <summary>
+        /// Returns an organizer by user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <response code="200">The request was successful.</response>
+        /// <response code="404">The was no organizer found by the given user id.</response>
+        /// <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        /// <returns>A single organizer.</returns>
+        [HttpGet("{userId:guid}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetOrganizerByUserId(Guid userId)
+        {
+            try
+            {
+                var result = await _serviceManager.OrganizerService.GetOrganizerByUserIdAsync(userId, trackChanges: false);
+                return Ok(result);
+            }
+            catch (OrganizerNotFoundException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
     }
 }
