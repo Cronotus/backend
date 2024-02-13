@@ -22,9 +22,10 @@ namespace Cronotus.Presentation.Controllers
         /// Creates a new organizer
         /// </summary>
         /// <param name="organizerDto"></param>
-        /// <returns code="201">The object was created successfully.</returns>
-        /// <returns code="400">Bad request sent. The request was not successful.</returns>
-        /// <returns code="409">The request was not successful because an organizer already exists with the given user id.</returns>
+        /// <response code="201">The object was created successfully.</response>
+        /// <response code="400">Bad request sent. The request was not successful.</response>
+        /// <response code="404">User was not found in the database by the given id.</response>
+        /// <response code="409">The request was not successful because an organizer already exists with the given user id.</response>
         [HttpPost]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> CreateOrganizer([FromBody] OrganizerForCreationDto organizerDto)
@@ -41,6 +42,10 @@ namespace Cronotus.Presentation.Controllers
             catch (OrganizerAlreadyExistsException ex)
             {
                 return StatusCode(409, ex.Message);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return StatusCode(404, ex.Message);
             }
             catch (Exception ex)
             {
@@ -73,6 +78,34 @@ namespace Cronotus.Presentation.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+
+        /// <summary>
+        /// Returns events bounded by organizer id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code="200">The request was successful.</response>
+        /// <response code="404">There was no organizer found in the database by the give id.</response>
+        /// <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        /// <returns>A list of event previews</returns>
+        [HttpGet("{id:guid}/events")]
+        [Authorize(Roles = "Organizer")]
+        public async Task<IActionResult> GetEventsByOrganizer(Guid id)
+        {
+            try
+            {
+                var result = await _serviceManager.EventService.GetEventsByOrganizerAsync(id, trackChanges: false);
+                return Ok(result);
+            }
+            catch (OrganizerNotFoundException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+            
         }
     }
 }

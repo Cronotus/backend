@@ -156,6 +156,31 @@ namespace Service
             return (eventToPatch, eventEntity);
         }
 
+        public async Task<IEnumerable<EventPreviewForReturnDto>> GetEventsByOrganizerAsync(Guid organizerId, bool trackChanges)
+        {
+            var organizerEntity = await _repository.Organizer.GetOrganizerAsync(organizerId, trackChanges);
+            if (organizerEntity is null)
+            {
+                _logger.LogError($"Organizer with id: {organizerId} doesn't exist in the database.");
+                throw new OrganizerNotFoundException($"Organizer with id: {organizerId} doesn't exist in the database.");
+            }
+
+            var eventEntitis = await _repository.Event.GetEventsByOrganizerAsync(organizerId, trackChanges);
+            var result = new List<EventPreviewForReturnDto>();
+            foreach (var e in eventEntitis)
+            {
+                var temp = new EventPreviewForReturnDto
+                {
+                    Id = e.Id,
+                    Name = e.Name!,
+                    StartDate = e.StartDate,
+                };
+                result.Add(temp);
+            }
+
+            return result;
+        }
+
         public void SaveChangesForPatch(EventForUpdateDto eventToPatch, Event eventEntity)
         {
             _mapper.Map(eventToPatch, eventEntity);

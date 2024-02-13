@@ -27,6 +27,13 @@ namespace Service
 
         public async Task<OrganizerDto> CreateOrganizer(OrganizerForCreationDto organizer)
         {
+            var userEntity = await _userManager.FindByIdAsync(organizer.userId.ToString());
+            if (userEntity is null)
+            {
+                _logger.LogError($"User with id: {organizer.userId} does not exist in the database.");
+                throw new UserNotFoundException($"User with id: {organizer.userId} does not exist in the database.");
+            }
+            
             var organizerExists = await _repository.Organizer.GetOrganizerByUserIdAsync(organizer.userId.ToString(), false);
             if (organizerExists is not null)
             {

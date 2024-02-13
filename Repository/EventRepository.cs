@@ -26,5 +26,10 @@ namespace Repository
         public async Task<Event?> GetEventAsync(Guid eventId, bool trackChanges) =>
             await FindByCondition(e => e.Id.ToString() == eventId.ToString(), trackChanges)
                 .SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<Event>> GetEventsByOrganizerAsync(Guid organizerId, bool trackChanges) =>
+            await FindByCondition(e => e.OrganizerId.ToString() == organizerId.ToString(), trackChanges)
+                .OrderBy(e => e.StartDate)
+                .ToListAsync();
     }
 }

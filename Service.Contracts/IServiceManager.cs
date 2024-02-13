@@ -7,5 +7,6 @@
         IAuthenticationService AuthenticationService { get; }
         IOrganizerService OrganizerService { get; }
         ISportService SportService { get; }
+        IPlayerService PlayerService { get; }
     }
 }

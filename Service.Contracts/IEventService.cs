@@ -6,6 +6,7 @@ namespace Service.Contracts
     public interface IEventService
     {
         Task<IEnumerable<EventPreviewForReturnDto>> GetAllEventsAsync(bool trackChanges);
+        Task<IEnumerable<EventPreviewForReturnDto>> GetEventsByOrganizerAsync(Guid organizerId, bool trackChanges);
         Task<EventForReturnDto?> GetEventAsync(Guid eventId, bool trackChanges);
         Task<EventForReturnDto> CreateEvent(EventForCreationDto eventDto);
         Task DeleteEvent(Guid eventId);
