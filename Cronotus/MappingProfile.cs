@@ -21,6 +21,8 @@ namespace Cronotus
             CreateMap<EventForUpdateDto, Event>().ReverseMap();
             CreateMap<SportForReturnDto, Sport>();
             CreateMap<SportForReturnDto, Sport>().ReverseMap();
+            CreateMap<PlayersOnEvent, PlayerOnEventDto>();
+            CreateMap<PlayersOnEvent, PlayerOnEventDto>().ReverseMap();
         }
     }
 }

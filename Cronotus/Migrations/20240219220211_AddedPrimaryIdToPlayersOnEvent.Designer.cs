@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Cronotus.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20240219220211_AddedPrimaryIdToPlayersOnEvent")]
+    partial class AddedPrimaryIdToPlayersOnEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,18 +170,15 @@ namespace Cronotus.Migrations
 
             modelBuilder.Entity("Entities.Models.PlayersOnEvent", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("InstanceId");
-
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("InstanceId");
+
                     b.Property<Guid?>("PlayerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
@@ -275,87 +275,87 @@ namespace Cronotus.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9af87922-32ad-402c-8952-db1f450254d8"),
+                            Id = new Guid("9eadfab0-30fe-46ff-b204-5b1c6b43b895"),
                             Name = "Football"
                         },
                         new
                         {
-                            Id = new Guid("262eb951-6cb3-4a78-97e2-6298dd9c9e4c"),
+                            Id = new Guid("b135e2ce-9390-4cf2-be5f-e0de394dd102"),
                             Name = "Basketball"
                         },
                         new
                         {
-                            Id = new Guid("e4b1d400-7816-4d3f-941e-14a1e9de2028"),
+                            Id = new Guid("8631b209-37b0-418f-bbbd-9ab9f10d694e"),
                             Name = "Cricket"
                         },
                         new
                         {
-                            Id = new Guid("9d48066d-a44f-4590-957b-30a31e5da4e1"),
+                            Id = new Guid("ba44b65d-75a6-40ff-8bcb-6ddfb86a783a"),
                             Name = "Volleyball"
                         },
                         new
                         {
-                            Id = new Guid("8b88280f-24ee-4656-ab41-aee876179f13"),
+                            Id = new Guid("9f62a64d-d174-4aae-a9e6-83cca65aad6f"),
                             Name = "Rugby"
                         },
                         new
                         {
-                            Id = new Guid("ac6badb6-c92a-4ab1-8be7-95e9c53bac7d"),
+                            Id = new Guid("d3f52746-d094-404b-b518-7e544a2b5b69"),
                             Name = "American Football"
                         },
                         new
                         {
-                            Id = new Guid("a769209f-1130-4ee0-b5d1-d492c7de3dbb"),
+                            Id = new Guid("3e0d023f-81ae-4250-a76f-438d45d986b4"),
                             Name = "Baseball"
                         },
                         new
                         {
-                            Id = new Guid("d6840a9e-095d-42b3-b907-e6c9478acdf0"),
+                            Id = new Guid("6ad94677-17dc-47ae-9a95-1a7f37ebfc88"),
                             Name = "Ice Hockey"
                         },
                         new
                         {
-                            Id = new Guid("8fc5a368-84a2-4438-9733-ae51a7588204"),
+                            Id = new Guid("ce52d759-410e-43b9-92ba-57093ebb6f98"),
                             Name = "Field Hockey"
                         },
                         new
                         {
-                            Id = new Guid("f472de91-a153-492f-9c4d-205154fab3ba"),
+                            Id = new Guid("6dc2acb1-b5e2-417e-a7ad-b71b1966ed24"),
                             Name = "Handball"
                         },
                         new
                         {
-                            Id = new Guid("f091a7d7-ea50-44da-913f-ce912f8df645"),
+                            Id = new Guid("e89341f2-aa5b-44d5-a814-7ea300c8b52b"),
                             Name = "Water Polo"
                         },
                         new
                         {
-                            Id = new Guid("fcf58936-819d-4f47-a0b3-ec891ee1da5d"),
+                            Id = new Guid("0bbf2f01-15d6-483f-88c1-0555f392fbb3"),
                             Name = "Softball"
                         },
                         new
                         {
-                            Id = new Guid("a464fdc0-9091-45c6-83eb-e02b96acf721"),
+                            Id = new Guid("5bfc5272-8228-4415-9de8-57362d04f716"),
                             Name = "Frisbee"
                         },
                         new
                         {
-                            Id = new Guid("f4b83a98-396f-4b8a-9153-d61ba01cd66f"),
+                            Id = new Guid("4b3e2b29-259c-4804-a655-5adf8229057f"),
                             Name = "Lacrosse"
                         },
                         new
                         {
-                            Id = new Guid("f4b67f62-73b1-425a-8dcf-9de28d420d45"),
+                            Id = new Guid("6ce1b032-2e64-4a61-8ede-7ba8461a832a"),
                             Name = "Tennis"
                         },
                         new
                         {
-                            Id = new Guid("e618724f-c485-4dd3-9428-13b8eeeed299"),
+                            Id = new Guid("68852178-8795-4055-a28f-945453cf3051"),
                             Name = "Table Tennis"
                         },
                         new
                         {
-                            Id = new Guid("32c92572-c0bb-40b5-bc9e-4138864baff1"),
+                            Id = new Guid("22d90c0a-5b4b-46bc-aaea-95d04d96e33d"),
                             Name = "Badminton"
                         });
                 });
@@ -491,25 +491,25 @@ namespace Cronotus.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c1c879d5-ef1b-47b7-aa29-d7008b14bbea",
+                            Id = "d6135eb1-5211-47c9-875b-2bc9160d55f8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "10a069c5-f8b3-4fb0-b2e5-d489a9edd545",
+                            Id = "5d12a66b-ebae-4137-b5b9-9dd04c8e6eca",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         },
                         new
                         {
-                            Id = "54cdc3cf-2898-4bdd-8c86-a78283d33f75",
+                            Id = "6a925e40-33fd-499b-9e4f-4faebc90a069",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         },
                         new
                         {
-                            Id = "be6febb6-68ea-4325-abcd-aea206515944",
+                            Id = "04871e77-2698-4b7e-809c-bfd25001c349",
                             Name = "User",
                             NormalizedName = "USER"
                         });

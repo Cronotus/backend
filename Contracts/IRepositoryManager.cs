@@ -7,6 +7,7 @@
         IOrganizerRepository Organizer { get; }
         ISportRepositry Sport { get; }
         IPlayerRepository Player { get; }
+        IPlayerOnEventRepository PlayerOnEvent { get; }
         void Save();
         Task SaveAsync();
     }

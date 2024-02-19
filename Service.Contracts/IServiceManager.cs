@@ -8,5 +8,6 @@
         IOrganizerService OrganizerService { get; }
         ISportService SportService { get; }
         IPlayerService PlayerService { get; }
+        IPlayerOnEventService PlayerOnEventService { get; }
     }
 }

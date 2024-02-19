@@ -122,6 +122,9 @@ namespace Service
                     return null;
                 }
 
+                var playersSingedUpEntities = await _repository.PlayerOnEvent.GetPlayersOnEventByEventIdAsync(eventEntity.Id, trackChanges);
+                var playersSingedUp = playersSingedUpEntities.Count();
+
                 var result = new EventForReturnDto
                 {
                     Id = eventEntity.Id,
@@ -129,6 +132,7 @@ namespace Service
                     OrganizerId = eventEntity.OrganizerId,
                     Name = eventEntity.Name!,
                     StartDate = eventEntity.StartDate,
+                    SignedUpPlayers = playersSingedUp,
                     capacity = eventEntity.Capacity,
                     isEnded = eventEntity.Ended,
                     Description = eventEntity.Description!,

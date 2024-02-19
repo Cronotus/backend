@@ -160,5 +160,76 @@ namespace Cronotus.Presentation.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
+        /// <summary>
+        /// Signs up a player to an event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="playerId"></param>
+        /// <response code="201">The player has been successfully signed up to the event.</response>
+        /// <response code="404">The event with the given id does not exist in the database.</response>
+        /// <response code="404">The player with the given id does not exist in the database.</response>
+        /// <response code="409">Could not sign up the player to the event because it has already ended and accepts no more participants.</response>
+        /// <response code="409">The player has already been signed up to the event.</response>
+        /// <response code="500">An internal server error occured causing the request to be unsuccessful.</response>
+        /// <returns>Player id along with target event id.</returns>
+        [HttpPost("{eventId:guid}/signup/{playerId:guid}")]
+        [Authorize(Roles = "Player")]
+        public async Task<IActionResult> SignUpPlayerToEvent(Guid eventId, Guid playerId)
+        {
+            try
+            {
+                var result = await _serviceManager.PlayerOnEventService.SignUpPlayerToEventAsync(playerId, eventId);
+                return StatusCode(201, result);
+            }
+            catch (PlayerNotFoundException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (EventNotFoundException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (EventEndedException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (PlayerAlreadySignedUpToEventException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Resigns a player from an event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="playerId"></param>
+        /// <response code="204">The player has been successfully resigned from the event.</response>
+        /// <response code="409">The player was not previously signed up to the event. Can not resign.</response>
+        /// <response code="500">There was an internal server error causing the request to unsuccessful.</response>
+        /// <returns>No return object</returns>
+        [HttpDelete("{eventId:guid}/resign/{playerId:guid}")]
+        [Authorize(Roles = "Player")]
+        public async Task<IActionResult> ResignPlayerFromEvent(Guid eventId, Guid playerId)
+        {
+            try
+            {
+                await _serviceManager.PlayerOnEventService.ResignPlayerFromEventAsync(playerId, eventId);
+                return NoContent();
+            }
+            catch (PlayerNotSignedUpException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
     }
 }

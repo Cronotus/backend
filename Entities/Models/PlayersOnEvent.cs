@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Entities.Models
 {
     [Table("PlayersOnEvents")]
-    [Keyless]
     public class PlayersOnEvent
     {
+        [Column("InstanceId")]
+        public Guid Id { get; set; }
+
         [ForeignKey(nameof(Player))]
         public Guid? PlayerId { get; set; }
 
