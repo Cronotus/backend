@@ -28,14 +28,12 @@ namespace Service
             var eventEntity = await _repository.Event.GetEventAsync(eventId, false);
             if (eventEntity is null)
             {
-                _logger.LogError($"Event with id {eventId} does not exist in the database.");
                 throw new EventNotFoundException($"Event with id {eventId} does not exist in the database.");
             }
 
             var playerEntity = await _repository.Player.GetPlayerAsync(playerId, false);
             if (playerEntity is null)
             {
-                _logger.LogError($"Player with id {playerId} does not exist in the database.");
                 throw new PlayerNotFoundException($"Player with id {playerId} does not exist in the database.");
             }
 
@@ -62,7 +60,6 @@ namespace Service
             var playerEntity = _repository.Player.GetPlayerAsync(playerId, false);
             if (playerEntity is null)
             {
-                _logger.LogError($"Player with id {playerId} does not exist in the database.");
                 throw new PlayerNotFoundException($"Player with id {playerId} does not exist in the database.");
             }
 
@@ -89,7 +86,6 @@ namespace Service
             var playerOnEventEntity = await _repository.PlayerOnEvent.GetPlayerOnEventByOwnIdsAsync(playerId, eventId, false);
             if (playerOnEventEntity is null)
             {
-                _logger.LogError($"Player with id {playerId} is not signed up to event with id {eventId}");
                 throw new PlayerNotSignedUpException($"Player with id {playerId} is not signed up to event with id {eventId}");
             }
 
@@ -105,27 +101,23 @@ namespace Service
             var playerEntity = await _repository.Player.GetPlayerAsync(playerId, false);
             if (playerEntity is null)
             {
-                _logger.LogError($"Player with id: {playerId} does not exist in the database.");
                 throw new PlayerNotFoundException($"Player with id: {playerId} does not exist in the database.");
             }
 
             var eventEntity = await _repository.Event.GetEventAsync(eventId, false);
             if (eventEntity is null)
             {
-                _logger.LogError($"Event with id: {eventId} does not exist in the database.");
                 throw new EventNotFoundException($"Event with id: {eventId} does not exist in the database.");
             }
 
             if (eventEntity.Ended)
             {
-                _logger.LogError($"Can't sign up to event with id: {eventId}. The event has already ended.");
                 throw new EventEndedException($"Can't sign up to event with id: {eventId}. The event has already ended.");
             }
 
             var playerOnEventEntity = await _repository.PlayerOnEvent.GetPlayerOnEventByOwnIdsAsync(playerId, eventId, false);
             if (playerOnEventEntity is not null)
             {
-                _logger.LogError($"The player with id {playerId} has already been signed up to event with id {eventId}");
                 throw new PlayerAlreadySignedUpToEventException($"The player with id {playerId} has already been signed up to event with id {eventId}");
             }
 

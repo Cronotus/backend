@@ -31,7 +31,6 @@ namespace Service
             var sportEntity = await _repository.Sport.GetSportAsync(id, trackChanges);
             if (sportEntity is null)
             {
-                _logger.LogError($"Sport with id: {id} doesn't exist in the database.");
                 throw new SportNotFoundException($"Sport with id: {id} doesn't exist in the database.");
             }
 

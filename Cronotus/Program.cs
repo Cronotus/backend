@@ -43,16 +43,9 @@ builder.Services.AddControllers(config =>
 
 var app = builder.Build();
 
-app.ConfigureErrorHandlingMiddleware();
+app.UseMiddleware<ExceptionMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseHsts();
-}
+app.UseHsts();
 
 // Configure the HTTP request pipeline.
 

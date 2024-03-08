@@ -25,14 +25,12 @@ namespace Service
             var organizerEntity = await _repository.Organizer.GetOrganizerAsync(eventDto.OrganizerId, false);
             if (organizerEntity is null)
             {
-                _logger.LogError($"Organizer with id: {eventDto.OrganizerId} doesn't exist in the database.");
                 throw new OrganizerNotFoundException($"Organizer with id: {eventDto.OrganizerId} doesn't exist in the database.");
             }
 
             var sportEntity = await _repository.Sport.GetSportAsync(eventDto.SportId, false);
             if (sportEntity is null)
             {
-                _logger.LogError($"Sport with id: {eventDto.SportId} doesn't exist in the database.");
                 throw new SportNotFoundException($"Sport with id: {eventDto.SportId} doesn't exist in the database.");
             }
 
@@ -75,7 +73,6 @@ namespace Service
             var eventEntity = await _repository.Event.GetEventAsync(eventId, false);
             if (eventEntity is null)
             {
-                _logger.LogError($"Event with id: {eventId} doesn't exist in the database.");
                 throw new EventNotFoundException($"Event with id: {eventId} doesn't exist in the database.");
             }
 
@@ -118,7 +115,6 @@ namespace Service
                 var eventEntity = await _repository.Event.GetEventAsync(eventId, trackChanges);
                 if (eventEntity is null)
                 {
-                    _logger.LogError($"Event with id: {eventId} doesn't exist in the database.");
                     throw new EventNotFoundException($"Event with id: {eventId} doesn't exist in the database.");
                 }
 
@@ -142,7 +138,6 @@ namespace Service
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong in the {nameof(GetEventAsync)} method: {ex}");
                 throw;
             }
         }
@@ -152,7 +147,6 @@ namespace Service
             var eventEntity = _repository.Event.GetEvent(id, trackChanges);
             if (eventEntity is null)
             {
-                _logger.LogError($"Event with id: {id} doesn't exist in the database.");
                 throw new EventNotFoundException($"Event with id: {id} doesn't exist in the database.");
             }
 
@@ -165,7 +159,6 @@ namespace Service
             var organizerEntity = await _repository.Organizer.GetOrganizerAsync(organizerId, trackChanges);
             if (organizerEntity is null)
             {
-                _logger.LogError($"Organizer with id: {organizerId} doesn't exist in the database.");
                 throw new OrganizerNotFoundException($"Organizer with id: {organizerId} doesn't exist in the database.");
             }
 

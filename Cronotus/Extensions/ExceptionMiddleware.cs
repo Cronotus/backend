@@ -22,57 +22,57 @@ namespace Cronotus.Extensions
             }
             catch (EventEndedException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status409Conflict}");
+                _logger.LogError($"Request failed on {nameof(EventEndedException)} with error {ex.Message} with code {StatusCodes.Status409Conflict}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
             }
             catch (EventNotFoundException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status404NotFound}");
+                _logger.LogError($"Request failed on {nameof(EventNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
             catch (OrganizerAlreadyExistsException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status409Conflict}");
+                _logger.LogError($"Request failed on {nameof(OrganizerAlreadyExistsException)} with error {ex.Message} with code {StatusCodes.Status409Conflict}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
             }
             catch (OrganizerNotFoundException ex) 
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status404NotFound}");
+                _logger.LogError($"Request failed on {nameof(OrganizerNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
             catch (PlayerAlreadyExistsException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status409Conflict}");
+                _logger.LogError($"Request failed on {nameof(PlayerAlreadyExistsException)} with error {ex.Message} with code {StatusCodes.Status409Conflict}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
             }
             catch (PlayerAlreadySignedUpToEventException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status409Conflict}");
+                _logger.LogError($"Request failed on {nameof(PlayerAlreadySignedUpToEventException)} with error {ex.Message} with code {StatusCodes.Status409Conflict}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
             }
             catch (PlayerNotFoundException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status404NotFound}");
+                _logger.LogError($"Request failed on {nameof(PlayerNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
             catch (PlayerNotSignedUpException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status409Conflict}");
+                _logger.LogError($"Request failed on {nameof(PlayerNotSignedUpException)} with error {ex.Message} with code {StatusCodes.Status409Conflict}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
             }
             catch (SportNotFoundException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status404NotFound}");
+                _logger.LogError($"Request failed on {nameof(SportNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UserNotFoundException ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status404NotFound}");
+                _logger.LogError($"Request failed on {nameof(UserNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Request failed at {nameof(ex)} with error {ex.Message}\nStatus code {StatusCodes.Status500InternalServerError}");
+                _logger.LogError($"Request failed on {nameof(Exception)} with error {ex.Message} with code {StatusCodes.Status500InternalServerError}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -83,8 +83,7 @@ namespace Cronotus.Extensions
             httpContext.Response.ContentType = "application/json";
             return httpContext.Response.WriteAsync(new ErrorDetails
             {
-                StatusCode = httpContext.Response.StatusCode,
-                Message = errorMessage
+                message = errorMessage
             }.ToString());
         }
     }

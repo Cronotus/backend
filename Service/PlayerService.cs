@@ -29,14 +29,12 @@ namespace Service
             var userEntity = await _userManager.FindByIdAsync(userId.ToString());
             if (userEntity is null)
             {
-                _logger.LogError($"User with id: {userId} does not exist in the database.");
                 throw new UserNotFoundException($"User with id: ${userId} does not exist in the database.");
             }
 
             var playerExistsEntity = await _repository.Player.GetPlayerByUserIdAsync(userId, trackChanges);
             if (playerExistsEntity is not null)
             {
-                _logger.LogError($"User with id: ${userId} is already registered as a player.");
                 throw new PlayerAlreadyExistsException($"User with id: ${userId} is already registered as a player.");
             }
 

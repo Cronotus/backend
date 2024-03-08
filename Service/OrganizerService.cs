@@ -30,14 +30,12 @@ namespace Service
             var userEntity = await _userManager.FindByIdAsync(organizer.userId.ToString());
             if (userEntity is null)
             {
-                _logger.LogError($"User with id: {organizer.userId} does not exist in the database.");
                 throw new UserNotFoundException($"User with id: {organizer.userId} does not exist in the database.");
             }
             
             var organizerExists = await _repository.Organizer.GetOrganizerByUserIdAsync(organizer.userId.ToString(), false);
             if (organizerExists is not null)
             {
-                _logger.LogError($"Organizer with user id: {organizer.userId} already exists in the database.");
                 throw new OrganizerAlreadyExistsException($"User with id: {organizer.userId} is already registered as an organizer.");
             }
 
@@ -67,7 +65,6 @@ namespace Service
             var organizerEntity = await _repository.Organizer.GetOrganizerByUserIdAsync(userId.ToString(), trackChanges);
             if (organizerEntity is null)
             {
-                _logger.LogError($"Organizer with user id: {userId} doesn't exist in the database.");
                 throw new OrganizerNotFoundException($"Organizer with user id: {userId} doesn't exist in the database.");
             }
 
