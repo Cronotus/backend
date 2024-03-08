@@ -127,8 +127,10 @@ namespace Cronotus.Extensions
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 swg.IncludeXmlComments(xmlPath);
             });
-
         }
+
+        public static void ConfigureErrorHandlingMiddleware(this IApplicationBuilder app) =>
+            app.UseMiddleware<ExceptionMiddleware>();
 
     }
 }

@@ -30,19 +30,12 @@ namespace Cronotus.Presentation.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetProfile(Guid id)
         {
-            try
-            {
-                var profile = await _service.ProfileService.GetProfileAsync(id, trackChanges: false);
+            var profile = await _service.ProfileService.GetProfileAsync(id, trackChanges: false);
 
-                if (profile == null)
-                    return StatusCode(404, $"Profile with id: {id} does not exist.");
+            if (profile == null)
+                return StatusCode(404, $"Profile with id: {id} does not exist.");
 
-                return Ok(profile);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return Ok(profile);
         }
 
         /// <summary>
@@ -79,15 +72,8 @@ namespace Cronotus.Presentation.Controllers
         [HttpDelete("{id:guid}")]
         public IActionResult DeleteProfile(Guid id)
         {
-            try
-            {
-                _service.ProfileService.DeleteProfile(id, trackChanges: false);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            _service.ProfileService.DeleteProfile(id, trackChanges: false);
+            return NoContent();
         }
     }
 }

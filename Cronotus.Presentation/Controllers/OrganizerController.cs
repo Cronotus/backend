@@ -30,27 +30,12 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> CreateOrganizer([FromBody] OrganizerForCreationDto organizerDto)
         {
-            try
-            {
-                if (organizerDto is null)
-                    return BadRequest("OrganizerForCreationDto object sent from client is null.");
+            if (organizerDto is null)
+                return BadRequest("OrganizerForCreationDto object sent from client is null.");
 
-                var createdOrganizer = await _serviceManager.OrganizerService.CreateOrganizer(organizerDto);
+            var createdOrganizer = await _serviceManager.OrganizerService.CreateOrganizer(organizerDto);
 
-                return StatusCode(201, createdOrganizer);
-            }
-            catch (OrganizerAlreadyExistsException ex)
-            {
-                return StatusCode(409, ex.Message);
-            }
-            catch (UserNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return StatusCode(201, createdOrganizer);
         }
 
         /// <summary>
@@ -65,19 +50,8 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetOrganizerByUserId(Guid userId)
         {
-            try
-            {
-                var result = await _serviceManager.OrganizerService.GetOrganizerByUserIdAsync(userId, trackChanges: false);
-                return Ok(result);
-            }
-            catch (OrganizerNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var result = await _serviceManager.OrganizerService.GetOrganizerByUserIdAsync(userId, trackChanges: false);
+            return Ok(result);
         }
 
         /// <summary>
@@ -92,20 +66,8 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Organizer")]
         public async Task<IActionResult> GetEventsByOrganizer(Guid id)
         {
-            try
-            {
-                var result = await _serviceManager.EventService.GetEventsByOrganizerAsync(id, trackChanges: false);
-                return Ok(result);
-            }
-            catch (OrganizerNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-            
+            var result = await _serviceManager.EventService.GetEventsByOrganizerAsync(id, trackChanges: false);
+            return Ok(result);
         }
     }
 }

@@ -31,27 +31,12 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> CreatePlayer([FromBody] PlayerForCreationDto playerDto)
         {
-            try
-            {
-                if (playerDto is null)
-                    return BadRequest("PlayerForCreationDto object sent from client is null.");
+            if (playerDto is null)
+                return BadRequest("PlayerForCreationDto object sent from client is null.");
 
-                var result = await _serviceManager.PlayerService.CreatePlayer(playerDto.userId, false);
+            var result = await _serviceManager.PlayerService.CreatePlayer(playerDto.userId, false);
 
-                return StatusCode(201, result);
-            }
-            catch (UserNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (PlayerAlreadyExistsException ex)
-            {
-                return StatusCode(409, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return StatusCode(201, result);
         }
     }
 }

@@ -93,6 +93,18 @@
             <response code="500">There was an internal server error causing the request to unsuccessful.</response>
             <returns>No return object</returns>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.CheckIfPlayerIsSignedUp(System.Guid,System.Guid)">
+            <summary>
+            Checks if a player is registered to a given event.
+            </summary>
+            <param name="eventId"></param>
+            <param name="playerId"></param>
+            <response code="200">Registration was checked and a flag was returned correspondingly.</response>
+            <response code="404">The event by the given id does not exist in the database.</response>
+            <response code="404">The player by the given id does not exist in the database.</response>
+            <response code="500">An internal server error occured causing the request to be unsucessful.</response>
+            <returns>A true flag with logical value.</returns>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.OrganizerController.CreateOrganizer(Shared.DataTransferObjects.OrganizerForCreationDto)">
             <summary>
             Creates a new organizer

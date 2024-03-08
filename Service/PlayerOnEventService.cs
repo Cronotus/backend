@@ -23,6 +23,67 @@ namespace Service
             _mapper = mapper;
         }
 
+        public async Task<PlayerSignedUpFlagForEventDto> CheckIfPlayerIsOnEvent(Guid eventId, Guid playerId)
+        {
+            var eventEntity = await _repository.Event.GetEventAsync(eventId, false);
+            if (eventEntity is null)
+            {
+                _logger.LogError($"Event with id {eventId} does not exist in the database.");
+                throw new EventNotFoundException($"Event with id {eventId} does not exist in the database.");
+            }
+
+            var playerEntity = await _repository.Player.GetPlayerAsync(playerId, false);
+            if (playerEntity is null)
+            {
+                _logger.LogError($"Player with id {playerId} does not exist in the database.");
+                throw new PlayerNotFoundException($"Player with id {playerId} does not exist in the database.");
+            }
+
+            var playerOnEventEntity = await _repository.PlayerOnEvent.GetPlayerOnEventByOwnIdsAsync(playerId, eventId, false);
+            if (playerOnEventEntity is not null)
+            {
+                var result = new PlayerSignedUpFlagForEventDto
+                {
+                    IsSignedUp = true
+                };
+                return result;
+            } else
+            {
+                var result = new PlayerSignedUpFlagForEventDto
+                {
+                    IsSignedUp = false
+                };
+                return result;
+            }
+        }
+
+        public async Task<IEnumerable<EventPreviewForReturnDto>> GetEventPreviewsThatPlayerSignedUpToAsync(Guid playerId)
+        {
+            var playerEntity = _repository.Player.GetPlayerAsync(playerId, false);
+            if (playerEntity is null)
+            {
+                _logger.LogError($"Player with id {playerId} does not exist in the database.");
+                throw new PlayerNotFoundException($"Player with id {playerId} does not exist in the database.");
+            }
+
+            var playerOnEventEntities = await _repository.PlayerOnEvent.GetPlayersOnEventByPlayerIdAsync(playerId, false);
+
+            var result = new List<EventPreviewForReturnDto>();
+            foreach (var playerOnEventEntity in playerOnEventEntities)
+            {
+                var currentEventEntity = await _repository.Event.GetEventAsync(playerOnEventEntity.EventId, false);
+                var eventPreviewDto = new EventPreviewForReturnDto
+                {
+                    Id = playerOnEventEntity.EventId,
+                    Name = currentEventEntity!.Name!,
+                    StartDate = currentEventEntity.StartDate
+                };
+                result.Add(eventPreviewDto);
+            }
+
+            return result;
+        }
+
         public async Task ResignPlayerFromEventAsync(Guid playerId, Guid eventId)
         {
             var playerOnEventEntity = await _repository.PlayerOnEvent.GetPlayerOnEventByOwnIdsAsync(playerId, eventId, false);

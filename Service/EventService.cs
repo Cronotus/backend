@@ -119,7 +119,7 @@ namespace Service
                 if (eventEntity is null)
                 {
                     _logger.LogError($"Event with id: {eventId} doesn't exist in the database.");
-                    return null;
+                    throw new EventNotFoundException($"Event with id: {eventId} doesn't exist in the database.");
                 }
 
                 var playersSingedUpEntities = await _repository.PlayerOnEvent.GetPlayersOnEventByEventIdAsync(eventEntity.Id, trackChanges);

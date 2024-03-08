@@ -6,7 +6,6 @@ namespace Entities.ErrorModel
     {
         public int StatusCode { get; init; }
         public string? Message { get; init; } = null!;
-        public override string ToString() =>
-            JsonSerializer.Serialize(this);
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

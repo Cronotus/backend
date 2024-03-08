@@ -23,5 +23,10 @@ namespace Repository
             await FindAll(trackChanges)
                 .Where(playerOnEvent => playerOnEvent.EventId.ToString() == eventId.ToString())
                 .ToArrayAsync();
+
+        public async Task<PlayersOnEvent[]> GetPlayersOnEventByPlayerIdAsync(Guid playerId, bool trackChanges) =>
+            await FindAll(trackChanges)
+                .Where(playerOnEvent => playerOnEvent.PlayerId.ToString() == playerId.ToString())
+                .ToArrayAsync();
     }
 }

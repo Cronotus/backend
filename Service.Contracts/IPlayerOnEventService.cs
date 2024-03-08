@@ -7,5 +7,7 @@ namespace Service.Contracts
     {
         Task<PlayerOnEventDto> SignUpPlayerToEventAsync(Guid playerId, Guid eventId);
         Task ResignPlayerFromEventAsync(Guid playerId, Guid eventId);
+        Task<PlayerSignedUpFlagForEventDto> CheckIfPlayerIsOnEvent(Guid eventId, Guid playerId);
+        Task<IEnumerable<EventPreviewForReturnDto>> GetEventPreviewsThatPlayerSignedUpToAsync(Guid playerId);
     }
 }

@@ -28,15 +28,8 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetAllEvents()
         {
-            try
-            {
-                var events = await _serviceManager.EventService.GetAllEventsAsync(trackChanges: false);
-                return Ok(events);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var events = await _serviceManager.EventService.GetAllEventsAsync(trackChanges: false);
+            return Ok(events);
         }
 
         /// <summary>
@@ -50,20 +43,10 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetEvent(Guid id)
         {
-            try
-            {
-                var result = await _serviceManager.EventService.GetEventAsync(id, trackChanges: false);
-                if (result is null)
-                    return StatusCode(404, $"Event with id: {id} does not exist.");
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var result = await _serviceManager.EventService.GetEventAsync(id, trackChanges: false);
+            return Ok(result);
         }
-
+            
         /// <summary>
         /// Creates a new event
         /// </summary>
@@ -76,27 +59,12 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Organizer")]
         public async Task<IActionResult> CreateEvent([FromBody] EventForCreationDto eventDto)
         {
-            try
-            {
-                if (eventDto is null)
-                    return BadRequest("EventForCreationDto object sent from client is null.");
+            if (eventDto is null)
+                return BadRequest("EventForCreationDto object sent from client is null.");
 
-                var createdEvent = await _serviceManager.EventService.CreateEvent(eventDto);
+            var createdEvent = await _serviceManager.EventService.CreateEvent(eventDto);
 
-                return StatusCode(201, createdEvent);
-            }
-            catch (OrganizerNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (SportNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return StatusCode(201, createdEvent);
         }
 
         /// <summary>
@@ -111,19 +79,8 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Organizer")]
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
-            try
-            {
-                await _serviceManager.EventService.DeleteEvent(id);
-                return NoContent();
-            }
-            catch (EventNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            await _serviceManager.EventService.DeleteEvent(id);
+            return NoContent();
         }
 
         /// <summary>
@@ -139,26 +96,15 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Organizer")]
         public IActionResult PartiallyUpdateEvent(Guid id, [FromBody] JsonPatchDocument<EventForUpdateDto> patchDoc)
         {
-            try
-            {
-                if (patchDoc is null)
-                    return BadRequest("patchDoc object sent from client is null.");
+            if (patchDoc is null)
+                return BadRequest("patchDoc object sent from client is null.");
 
-                var result = _serviceManager.EventService.GetEventForPatch(id, trackChanges: true);
-                patchDoc.ApplyTo(result.eventForUpdateDto);
+            var result = _serviceManager.EventService.GetEventForPatch(id, trackChanges: true);
+            patchDoc.ApplyTo(result.eventForUpdateDto);
 
-                _serviceManager.EventService.SaveChangesForPatch(result.eventForUpdateDto, result.eventEntity);
+            _serviceManager.EventService.SaveChangesForPatch(result.eventForUpdateDto, result.eventEntity);
 
-                return NoContent();
-            }
-            catch (EventNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return NoContent();
         }
 
         /// <summary>
@@ -177,31 +123,8 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Player")]
         public async Task<IActionResult> SignUpPlayerToEvent(Guid eventId, Guid playerId)
         {
-            try
-            {
-                var result = await _serviceManager.PlayerOnEventService.SignUpPlayerToEventAsync(playerId, eventId);
-                return StatusCode(201, result);
-            }
-            catch (PlayerNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (EventNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (EventEndedException ex)
-            {
-                return StatusCode(409, ex.Message);
-            }
-            catch (PlayerAlreadySignedUpToEventException ex)
-            {
-                return StatusCode(409, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var result = await _serviceManager.PlayerOnEventService.SignUpPlayerToEventAsync(playerId, eventId);
+            return StatusCode(201, result);
         }
 
         /// <summary>
@@ -217,19 +140,25 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Player")]
         public async Task<IActionResult> ResignPlayerFromEvent(Guid eventId, Guid playerId)
         {
-            try
-            {
-                await _serviceManager.PlayerOnEventService.ResignPlayerFromEventAsync(playerId, eventId);
-                return NoContent();
-            }
-            catch (PlayerNotSignedUpException ex)
-            {
-                return StatusCode(409, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            await _serviceManager.PlayerOnEventService.ResignPlayerFromEventAsync(playerId, eventId);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Checks if a player is registered to a given event.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="playerId"></param>
+        /// <response code="200">Registration was checked and a flag was returned correspondingly.</response>
+        /// <response code="404">The event by the given id does not exist in the database.</response>
+        /// <response code="404">The player by the given id does not exist in the database.</response>
+        /// <response code="500">An internal server error occured causing the request to be unsucessful.</response>
+        /// <returns>A true flag with logical value.</returns>
+        [HttpGet("{eventId:guid}/check/{playerId:guid}")]
+        public async Task<IActionResult> CheckIfPlayerIsSignedUp(Guid eventId, Guid playerId)
+        {
+            var result = await _serviceManager.PlayerOnEventService.CheckIfPlayerIsOnEvent(eventId, playerId);
+            return Ok(result);
         }
     }
 }

@@ -27,15 +27,8 @@ namespace Cronotus.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSports()
         {
-            try
-            {
-                var sports = await _serviceManager.SportService.GetAllSportsAsync(trackChanges: false);
-                return Ok(sports);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var sports = await _serviceManager.SportService.GetAllSportsAsync(trackChanges: false);
+            return Ok(sports);
         }
 
         /// <summary>
@@ -49,19 +42,8 @@ namespace Cronotus.Presentation.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetSport(Guid id)
         {
-            try
-            {
-                var result = await _serviceManager.SportService.SportForReturnAsync(id, trackChanges: false);
-                return Ok(result);
-            }
-            catch (SportNotFoundException ex)
-            {
-                return StatusCode(404, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var result = await _serviceManager.SportService.SportForReturnAsync(id, trackChanges: false);
+            return Ok(result);
         }
     }
 }
