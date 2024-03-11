@@ -97,9 +97,12 @@ namespace Cronotus.Presentation.Controllers
         /// <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
         /// <returns></returns>
         [HttpDelete("{id:guid}")]
-        [Authorize(Roles = "Organizer")]
+        [Authorize]
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
+            var accessToken = Request.Headers[HeaderNames.Authorization];
+            await _serviceManager.AuthenticationService.CheckForOrganizerRole(accessToken);
+
             await _serviceManager.EventService.DeleteEvent(id);
             return NoContent();
         }
@@ -114,11 +117,14 @@ namespace Cronotus.Presentation.Controllers
         /// <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
         /// <returns>No return object</returns>
         [HttpPatch("{id:guid}")]
-        [Authorize(Roles = "Organizer")]
-        public IActionResult PartiallyUpdateEvent(Guid id, [FromBody] JsonPatchDocument<EventForUpdateDto> patchDoc)
+        [Authorize]
+        public async Task<IActionResult> PartiallyUpdateEvent(Guid id, [FromBody] JsonPatchDocument<EventForUpdateDto> patchDoc)
         {
             if (patchDoc is null)
                 return BadRequest("patchDoc object sent from client is null.");
+
+            var accessToken = Request.Headers[HeaderNames.Authorization];
+            await _serviceManager.AuthenticationService.CheckForOrganizerRole(accessToken);
 
             var result = _serviceManager.EventService.GetEventForPatch(id, trackChanges: true);
             patchDoc.ApplyTo(result.eventForUpdateDto);
@@ -141,9 +147,15 @@ namespace Cronotus.Presentation.Controllers
         /// <response code="500">An internal server error occured causing the request to be unsuccessful.</response>
         /// <returns>Player id along with target event id.</returns>
         [HttpPost("{eventId:guid}/signup/{playerId:guid}")]
-        [Authorize(Roles = "Player")]
+        [Authorize]
         public async Task<IActionResult> SignUpPlayerToEvent(Guid eventId, Guid playerId)
         {
+            if (playerId == Guid.Empty)
+            {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+                playerId = await _serviceManager.AuthenticationService.CheckForPlayerRole(accessToken);
+            }
+
             var result = await _serviceManager.PlayerOnEventService.SignUpPlayerToEventAsync(playerId, eventId);
             return StatusCode(201, result);
         }
@@ -158,9 +170,15 @@ namespace Cronotus.Presentation.Controllers
         /// <response code="500">There was an internal server error causing the request to unsuccessful.</response>
         /// <returns>No return object</returns>
         [HttpDelete("{eventId:guid}/resign/{playerId:guid}")]
-        [Authorize(Roles = "Player")]
+        [Authorize]
         public async Task<IActionResult> ResignPlayerFromEvent(Guid eventId, Guid playerId)
         {
+            if (playerId == Guid.Empty)
+            {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+                playerId = await _serviceManager.AuthenticationService.CheckForPlayerRole(accessToken);
+            }
+
             await _serviceManager.PlayerOnEventService.ResignPlayerFromEventAsync(playerId, eventId);
             return NoContent();
         }

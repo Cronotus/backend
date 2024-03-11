@@ -110,36 +110,29 @@ namespace Service
 
         public async Task<EventForReturnDto?> GetEventAsync(Guid eventId, bool trackChanges)
         {
-            try
+            var eventEntity = await _repository.Event.GetEventAsync(eventId, trackChanges);
+            if (eventEntity is null)
             {
-                var eventEntity = await _repository.Event.GetEventAsync(eventId, trackChanges);
-                if (eventEntity is null)
-                {
-                    throw new EventNotFoundException($"Event with id: {eventId} doesn't exist in the database.");
-                }
-
-                var playersSingedUpEntities = await _repository.PlayerOnEvent.GetPlayersOnEventByEventIdAsync(eventEntity.Id, trackChanges);
-                var playersSingedUp = playersSingedUpEntities.Count();
-
-                var result = new EventForReturnDto
-                {
-                    Id = eventEntity.Id,
-                    SportId = eventEntity.SportId,
-                    OrganizerId = eventEntity.OrganizerId,
-                    Name = eventEntity.Name!,
-                    StartDate = eventEntity.StartDate,
-                    SignedUpPlayers = playersSingedUp,
-                    capacity = eventEntity.Capacity,
-                    isEnded = eventEntity.Ended,
-                    Description = eventEntity.Description!,
-                    Location = eventEntity.Location!
-                };
-                return result;
+                throw new EventNotFoundException($"Event with id: {eventId} doesn't exist in the database.");
             }
-            catch (Exception ex)
+
+            var playersSingedUpEntities = await _repository.PlayerOnEvent.GetPlayersOnEventByEventIdAsync(eventEntity.Id, trackChanges);
+            var playersSingedUp = playersSingedUpEntities.Count();
+
+            var result = new EventForReturnDto
             {
-                throw;
-            }
+                Id = eventEntity.Id,
+                SportId = eventEntity.SportId,
+                OrganizerId = eventEntity.OrganizerId,
+                Name = eventEntity.Name!,
+                StartDate = eventEntity.StartDate,
+                SignedUpPlayers = playersSingedUp,
+                capacity = eventEntity.Capacity,
+                isEnded = eventEntity.Ended,
+                Description = eventEntity.Description!,
+                Location = eventEntity.Location!
+            };
+            return result;
         }
 
         public (EventForUpdateDto eventForUpdateDto, Event eventEntity) GetEventForPatch(Guid id, bool trackChanges)
