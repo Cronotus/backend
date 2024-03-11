@@ -11,6 +11,8 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Shared.Exceptions;
+using Microsoft.Extensions.Primitives;
 
 namespace Service
 {
@@ -186,6 +188,64 @@ namespace Service
             _user = user;
 
             return await CreateToken(populateExp: false);
+        }
+
+        public async Task<Guid> CheckForPlayerRole(StringValues accessToken)
+        {
+            string accessTokenString = accessToken!;
+            accessTokenString = accessTokenString.Replace("Bearer ", "");
+
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(accessTokenString);
+
+            var playerIdentifier = token.Claims.FirstOrDefault(c => c.Type == "PlayerNameIdentifier")?.Value;
+            if (playerIdentifier is not null)
+                return new Guid(playerIdentifier);
+
+            var userId = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            Player newPlayer = new Player
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId
+            };
+
+            _repository.Player.CreatePlayer(newPlayer);
+            await _repository.SaveAsync();
+
+            var userEntity = await _userManager.FindByIdAsync(userId!);
+            await _userManager.AddToRolesAsync(userEntity!, ["Player"]);
+            
+            return newPlayer.Id;
+        }
+
+        public async Task<Guid> CheckForOrganizerRole(StringValues accessToken)
+        {
+            string accessTokenString = accessToken!;
+            accessTokenString = accessTokenString.Replace("Bearer ", "");
+
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(accessTokenString);
+
+            var organizerIdentifier = token.Claims.FirstOrDefault(c => c.Type == "OrganizerNameIdentifier")?.Value;
+            if (organizerIdentifier is not null)
+                return new Guid(organizerIdentifier);
+
+            var userId = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            Organizer newOrganizer = new Organizer
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId
+            };
+
+            _repository.Organizer.CreateOrganizer(newOrganizer);
+            await _repository.SaveAsync();
+
+            var userEntity = await _userManager.FindByIdAsync(userId!);
+            await _userManager.AddToRolesAsync(userEntity!, ["Organizer"]);
+
+            return newOrganizer.Id;
         }
     }
 }

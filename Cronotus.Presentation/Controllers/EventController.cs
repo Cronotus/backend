@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.Exceptions;
@@ -56,14 +57,34 @@ namespace Cronotus.Presentation.Controllers
         /// <response code="400">The input object was not in acceptable form causing a bad request.</response>
         /// <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
         [HttpPost]
-        [Authorize(Roles = "Organizer")]
+        [Authorize]
         public async Task<IActionResult> CreateEvent([FromBody] EventForCreationDto eventDto)
         {
             if (eventDto is null)
                 return BadRequest("EventForCreationDto object sent from client is null.");
 
-            var createdEvent = await _serviceManager.EventService.CreateEvent(eventDto);
+            if (eventDto.OrganizerId == Guid.Empty)
+            {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+                var organizerId = await _serviceManager.AuthenticationService.CheckForOrganizerRole(accessToken);
 
+                var modifiedEventDto = new EventForCreationDto
+                {
+                    SportId = eventDto.SportId,
+                    OrganizerId = organizerId,
+                    Name = eventDto.Name,
+                    Description = eventDto.Description,
+                    Location = eventDto.Location,
+                    StartDate = eventDto.StartDate,
+                    Capacity = eventDto.Capacity,
+                    isEnded = eventDto.isEnded
+                };
+
+                var modifiedCreatedEvent = await _serviceManager.EventService.CreateEvent(modifiedEventDto);
+                return StatusCode(201, modifiedCreatedEvent);
+            }
+                
+            var createdEvent = await _serviceManager.EventService.CreateEvent(eventDto);
             return StatusCode(201, createdEvent);
         }
 
