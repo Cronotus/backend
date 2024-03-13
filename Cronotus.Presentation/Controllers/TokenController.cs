@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -6,6 +7,7 @@ namespace Cronotus.Presentation.Controllers
 {
     [Route("api/token")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class TokenController : ControllerBase
     {
         private readonly IServiceManager _service;

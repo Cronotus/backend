@@ -10,7 +10,5 @@ namespace Service.Contracts
         Task<bool> ValidateUser(UserForAuthenticationDto userForAuthentication);
         Task<TokenDto> CreateToken(bool populateExp);
         Task<TokenDto> RefreshToken(TokenDto tokenDto);
-        Task<Guid> CheckForPlayerRole(StringValues accessToken);
-        Task<Guid> CheckForOrganizerRole(StringValues accessToken);
     }
 }
