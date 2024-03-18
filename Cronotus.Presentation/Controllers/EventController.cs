@@ -79,9 +79,6 @@ namespace Cronotus.Presentation.Controllers
         [Authorize(Roles = "Organizer")]
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
-            var accessToken = Request.Headers[HeaderNames.Authorization];
-            await _serviceManager.AuthenticationService.CheckForOrganizerRole(accessToken);
-
             await _serviceManager.EventService.DeleteEvent(id);
             return NoContent();
         }

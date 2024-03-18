@@ -119,10 +119,15 @@ namespace Service
             var playersSingedUpEntities = await _repository.PlayerOnEvent.GetPlayersOnEventByEventIdAsync(eventEntity.Id, trackChanges);
             var playersSingedUp = playersSingedUpEntities.Count();
 
+            var sportEntity = await _repository.Sport.GetSportAsync(eventEntity.SportId, trackChanges);
+            if (sportEntity is null)
+                throw new SportNotFoundException($"Sport with id: {eventEntity.SportId} doesn't exist in the database.");
+
             var result = new EventForReturnDto
             {
                 Id = eventEntity.Id,
                 SportId = eventEntity.SportId,
+                SportName = sportEntity.Name,
                 OrganizerId = eventEntity.OrganizerId,
                 Name = eventEntity.Name!,
                 StartDate = eventEntity.StartDate,
