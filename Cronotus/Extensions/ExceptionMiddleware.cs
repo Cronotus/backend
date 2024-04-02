@@ -70,6 +70,11 @@ namespace Cronotus.Extensions
                 _logger.LogError($"Request failed on {nameof(UserNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
+            catch (Shared.Exceptions.FileNotFoundException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(Shared.Exceptions.FileNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Request failed on {nameof(Exception)} with error {ex.Message} with code {StatusCodes.Status500InternalServerError}");
