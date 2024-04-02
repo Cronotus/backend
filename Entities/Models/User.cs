@@ -21,6 +21,10 @@ namespace Entities.Models
 
         public string? RefreshToken { get; set; }
 
+        public string? ProfilePicture { get; set; }
+
+        public string? ProfileCoverImage { get; set; }       
+
         public DateTime RefreshTokenExpiryTime { get; set; }
 
         public ICollection<Review>? ReviewsMade { get; set; }

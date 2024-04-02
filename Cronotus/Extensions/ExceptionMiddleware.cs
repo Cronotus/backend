@@ -75,6 +75,26 @@ namespace Cronotus.Extensions
                 _logger.LogError($"Request failed on {nameof(Shared.Exceptions.FileNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
             }
+            catch (BlobNameNotFoundException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(BlobNameNotFoundException)} with error {ex.Message} with code {StatusCodes.Status404NotFound}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (BlobFileNullException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(BlobFileNullException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (BlobFileFormatException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(BlobFileFormatException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (BlobFileSizeException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(BlobFileSizeException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Request failed on {nameof(Exception)} with error {ex.Message} with code {StatusCodes.Status500InternalServerError}");
