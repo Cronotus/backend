@@ -8,5 +8,7 @@
         public string? UserName { get; init; }
         public string? Email { get; init; }
         public string? PhoneNumber { get; init; }
+        public string? ProfilePicture { get; init; }
+        public string? ProfileCoverImage { get; init; }
     }
 }

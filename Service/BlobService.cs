@@ -9,11 +9,13 @@ namespace Service
 {
     public class BlobService : IBlobService
     {
+        private readonly string _connectionString;
         private readonly BlobServiceClient _blobClient;
 
-        public BlobService(BlobServiceClient blobClient)
+        public BlobService(string connectionString)
         {
-            _blobClient = blobClient;
+            _connectionString = connectionString;
+            _blobClient = new BlobServiceClient(_connectionString);
         }
 
         public async Task DeleteFileAsync(string fileName, string containerName)
@@ -59,7 +61,7 @@ namespace Service
             if (file.Length > Shared.Constants.MaxFileSize)
                 throw new BlobFileSizeException("File is too large");
 
-            var blobName = Guid.NewGuid().ToString() + file.FileName;
+            var blobName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
             var blobClient = _blobClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
 

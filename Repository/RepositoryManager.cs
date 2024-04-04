@@ -30,7 +30,6 @@ namespace Repository
         public IPlayerRepository Player => _playerRepository.Value;
         public IPlayerOnEventRepository PlayerOnEvent => _playerOnEventRepository.Value;
         public void Save() => _repositoryContext.SaveChanges();
-
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
     }
 }

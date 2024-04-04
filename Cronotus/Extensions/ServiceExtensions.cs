@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using Azure.Storage.Blobs;
+using Contracts;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

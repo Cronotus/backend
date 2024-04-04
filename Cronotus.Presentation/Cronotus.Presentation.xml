@@ -20,6 +20,21 @@
             <response code="200">Login was successfull</response>
             <response code="401">The credentials were incorrect thus the login failed</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.BlobController.GetAllBlobNames(System.String)">
+            <summary>
+            Gets all blob names in a container
+            </summary>
+            <param name="containerName"></param>
+            <returns>A list of the available blob names</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.BlobController.UploadImage(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            Uploads an image to a container
+            </summary>
+            <param name="file"></param>
+            <param name="containerName"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.EventController.GetAllEvents">
             <summary>
             Returns a preview of all events
@@ -165,6 +180,38 @@
             <returns>No return object</returns>
             <response code="204">The request was successful and the object was partially updated.</response>
             <response code="400">The patch document is null, the update was not successful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.UpdateProfilePicture(System.Guid,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Updates the profile picture of a user. If the user already has a profile picture, the old one is deleted.
+            </summary>
+            <param name="id">User id</param>
+            <param name="file">The picture file</param>
+            <returns>URI to the new profile picture</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfilePicture(System.Guid)">
+            <summary>
+            Deletes the profile picture of a user. If the user does not have a profile picture, an exception is thrown.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:Shared.Exceptions.NoProfilePictureException"></exception>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.UpdateProfileCoverImage(System.Guid,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Updates the profile cover image of a user. If the user already has a profile cover image, the old one is deleted.
+            </summary>
+            <param name="id"></param>
+            <param name="file"></param>
+            <returns>URI to the new cover image</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfileCoverImage(System.Guid)">
+            <summary>
+            Deletes the profile cover image of a user. If the user does not have a profile cover image, an exception is thrown.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:Shared.Exceptions.NoProfileCoverPictureException"></exception>
         </member>
         <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfile(System.Guid)">
             <summary>

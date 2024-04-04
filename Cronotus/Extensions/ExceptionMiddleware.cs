@@ -95,6 +95,16 @@ namespace Cronotus.Extensions
                 _logger.LogError($"Request failed on {nameof(BlobFileSizeException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status400BadRequest, ex.Message);
             }
+            catch (NoProfilePictureException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(NoProfilePictureException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
+            }
+            catch (NoProfileCoverPictureException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(NoProfileCoverPictureException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Request failed on {nameof(Exception)} with error {ex.Message} with code {StatusCodes.Status500InternalServerError}");
