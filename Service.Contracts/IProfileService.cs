@@ -6,6 +6,7 @@ namespace Service.Contracts
     public interface IProfileService
     {
         Task<ProfileForReturnDto?> GetProfileAsync(Guid id, bool trackChanges);
+        Task<ProfileForReturnDto?> GetProfileByOrganizerIdAsync(Guid id, bool trackChanges);
         (ProfileForUpdateDto profileToPatch, User userEntity) GetProfileForPatch(Guid id, bool trackChanges);
         Task<string?> GetProfilePictureUriAsync(Guid id);
         Task<string?> GetProfileCoverImageUriAsync(Guid id);

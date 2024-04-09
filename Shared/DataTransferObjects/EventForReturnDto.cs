@@ -8,6 +8,7 @@ namespace Shared.DataTransferObjects
         public Guid SportId { get; init; }
         public string? SportName { get; init; }
         public Guid OrganizerId { get; init; }
+        public string? OrganizerName { get; init; }
         public string Name { get; init; } = null!;
         public string Description { get; init; } = null!;
         public string Location { get; init; } = null!;

@@ -20,7 +20,6 @@ namespace Cronotus.Presentation.Controllers
         private readonly IServiceManager _service;
         private readonly BlobService _blobService;
         
-
         public ProfileController(IServiceManager service, IConfiguration configuration)
         {
             _service = service;
@@ -43,6 +42,17 @@ namespace Cronotus.Presentation.Controllers
 
             if (profile == null)
                 return StatusCode(404, $"Profile with id: {id} does not exist.");
+
+            return Ok(profile);
+        }
+
+        [HttpGet("organizer/{organizerId:guid}")]
+        public async Task<IActionResult> GetProfileByOrganizerId(Guid organizerId)
+        {
+            var profile = await _service.ProfileService.GetProfileByOrganizerIdAsync(organizerId, trackChanges: false);
+
+            if (profile == null)
+                return StatusCode(404, $"Profile with organizer id: {organizerId} does not exist.");
 
             return Ok(profile);
         }
@@ -99,7 +109,7 @@ namespace Cronotus.Presentation.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="NoProfilePictureException"></exception>
-        [HttpPut("{id:guid}/delete-picture")]
+        [HttpDelete("{id:guid}/delete-picture")]
         public async Task<IActionResult> DeleteProfilePicture(Guid id)
         {
             var currentProfileUri = await _service.ProfileService.GetProfilePictureUriAsync(id);
@@ -123,7 +133,7 @@ namespace Cronotus.Presentation.Controllers
         [HttpPut("{id:guid}/update-cover")]
         public async Task<IActionResult> UpdateProfileCoverImage(Guid id, [FromForm] IFormFile file)
         {
-            var currentCoverUri = await _service.ProfileService.GetProfilePictureUriAsync(id);
+            var currentCoverUri = await _service.ProfileService.GetProfileCoverImageUriAsync(id);
 
             if (currentCoverUri is not null)
             {
@@ -143,7 +153,7 @@ namespace Cronotus.Presentation.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="NoProfileCoverPictureException"></exception>
-        [HttpPut("{id:guid}/delete-cover")]
+        [HttpDelete("{id:guid}/delete-cover")]
         public async Task<IActionResult> DeleteProfileCoverImage(Guid id)
         {
             var currentCoverUri = await _service.ProfileService.GetProfileCoverImageUriAsync(id);

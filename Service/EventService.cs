@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.Exceptions;
@@ -12,12 +13,14 @@ namespace Service
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public EventService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public EventService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, UserManager<User> userManager)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<EventForReturnDto> CreateEvent(EventForCreationDto eventDto)
@@ -50,6 +53,19 @@ namespace Service
             _repository.Event.CreateEvent(eventEntity);
             _repository.Save();
 
+            var playerEntity = await _repository.Player.GetPlayerByUserIdAsync(new Guid(organizerEntity.UserId!), false);
+            if (playerEntity is null)
+                throw new PlayerNotFoundException($"Player with id: {organizerEntity.UserId} doesn't exist in the database.");
+
+            var playerOnEventEntity = new PlayersOnEvent
+            {
+                Id = Guid.NewGuid(),
+                PlayerId = playerEntity.Id,
+                EventId = eventEntity.Id
+            };
+
+            _repository.PlayerOnEvent.CreatePlayerOnEvent(playerOnEventEntity);
+            _repository.Save();
 
             var result = new EventForReturnDto
             {
@@ -65,7 +81,6 @@ namespace Service
             };
 
             return result;
-            
         }
 
         public async Task DeleteEvent(Guid eventId)
@@ -123,12 +138,21 @@ namespace Service
             if (sportEntity is null)
                 throw new SportNotFoundException($"Sport with id: {eventEntity.SportId} doesn't exist in the database.");
 
+            var organizerEntity = await _repository.Organizer.GetOrganizerAsync(eventEntity.OrganizerId, trackChanges);
+            if (organizerEntity is null)
+                throw new OrganizerNotFoundException($"Organizer with id: {eventEntity.OrganizerId} doesn't exist in the database.");
+
+            var userEntity = await _userManager.FindByIdAsync(organizerEntity.UserId!);
+            if (userEntity is null)
+                throw new UserNotFoundException($"User with id: {eventEntity.OrganizerId} doesn't exist in the database.");
+
             var result = new EventForReturnDto
             {
                 Id = eventEntity.Id,
                 SportId = eventEntity.SportId,
                 SportName = sportEntity.Name,
                 OrganizerId = eventEntity.OrganizerId,
+                OrganizerName = userEntity.UserName,
                 Name = eventEntity.Name!,
                 StartDate = eventEntity.StartDate,
                 SignedUpPlayers = playersSingedUp,

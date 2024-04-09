@@ -44,6 +44,23 @@ namespace Service
                 await _userManager.AddToRolesAsync(user, ["User"]);
             }
 
+            var organizerEntityToCreate = new Organizer
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id
+            };
+            _repository.Organizer.CreateOrganizer(organizerEntityToCreate);
+            await _userManager.AddToRolesAsync(user, ["Organizer"]);
+
+            var playerEntityToCreate = new Player
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id
+            };
+
+            _repository.Player.CreatePlayer(playerEntityToCreate);
+            await _userManager.AddToRolesAsync(user, ["Player"]);
+
             return result;
         }
 

@@ -60,6 +60,31 @@ namespace Service
             }
         }
 
+        public async Task<ProfileForReturnDto?> GetProfileByOrganizerIdAsync(Guid id, bool trackChanges)
+        {
+            var organizerEntity = await _repositoryManager.Organizer.GetOrganizerAsync(id, trackChanges);
+            if (organizerEntity is null)
+                throw new OrganizerNotFoundException($"Organizer with id: {id} doesn't exist in the database.");
+
+            var profileEntity = await _repositoryManager.Profile.GetProfileAsync(new Guid(organizerEntity.UserId!), trackChanges);
+            if (profileEntity is null)
+                throw new UserNotFoundException($"User with id {organizerEntity.UserId} does not exist in the database.");
+
+            var profileToReturn = new ProfileForReturnDto
+            {
+                Id = new Guid(profileEntity.Id),
+                UserName = profileEntity.UserName,
+                Email = profileEntity.Email,
+                PhoneNumber = profileEntity.PhoneNumber,
+                FirstName = profileEntity.FirstName,
+                LastName = profileEntity.LastName,
+                ProfilePicture = profileEntity.ProfilePicture,
+                ProfileCoverImage = profileEntity.ProfileCoverImage
+            };
+
+            return profileToReturn;
+        }
+
         public async Task<string?> GetProfileCoverImageUriAsync(Guid id)
         {
             var profileEntity = await _repositoryManager.Profile.GetProfileAsync(id, trackChanges: false);
