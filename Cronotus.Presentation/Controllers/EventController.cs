@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
+using Service;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.Exceptions;
@@ -13,10 +16,13 @@ namespace Cronotus.Presentation.Controllers
     public class EventController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
+        private readonly BlobService _blobService;
 
-        public EventController(IServiceManager serviceManager)
+        public EventController(IServiceManager serviceManager, IConfiguration configuration)
         {
             _serviceManager = serviceManager;
+            var connectionString = configuration.GetConnectionString("AzureBlobStorageConnection");
+            _blobService = new BlobService(connectionString!);
         }
 
         /// <summary>
@@ -159,6 +165,20 @@ namespace Cronotus.Presentation.Controllers
         {
             var result = await _serviceManager.PlayerOnEventService.CheckIfPlayerIsOnEvent(eventId, playerId);
             return Ok(result);
+        }
+
+        [HttpPost("{eventId:guid}/upload-pictures")]
+        public async Task<IActionResult> UploadPicturesToEvent(Guid eventId, [FromForm] IFormFileCollection files)
+        {
+            if (files.Count == 0)
+                throw new BlobFileNullException("No files were uploaded.");
+
+            var responses = new List<string?>();
+            foreach (var file in files)
+            {
+                responses.Add(await _blobService.UploadFileAsync(file, eventId.ToString()));
+            }
+            return Ok(responses);
         }
     }
 }

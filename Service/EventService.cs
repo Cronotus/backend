@@ -91,6 +91,12 @@ namespace Service
                 throw new EventNotFoundException($"Event with id: {eventId} doesn't exist in the database.");
             }
 
+            var playersRegisteredToEvent = await _repository.PlayerOnEvent.GetPlayersOnEventByEventIdAsync(eventId, true);
+            foreach (var p in playersRegisteredToEvent)
+            {
+                _repository.PlayerOnEvent.DeletePlayerOnEvent(p);
+            }
+
             _repository.Event.DeleteEvent(eventEntity);
             _repository.Save();
         }
