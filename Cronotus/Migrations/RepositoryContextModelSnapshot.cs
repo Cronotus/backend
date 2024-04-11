@@ -96,6 +96,26 @@ namespace Cronotus.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("Entities.Models.EventPicture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("EventPictureId");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("EventPictures");
+                });
+
             modelBuilder.Entity("Entities.Models.EventReview", b =>
                 {
                     b.Property<Guid>("ReviewId")
@@ -275,87 +295,87 @@ namespace Cronotus.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9dc6d934-0d8b-45c9-a8f7-296e2c679ee3"),
+                            Id = new Guid("cc686fad-f71b-4a5f-b2b6-ccbb369e27f2"),
                             Name = "Football"
                         },
                         new
                         {
-                            Id = new Guid("0f80c10e-50e6-4108-8d98-3fedf6ead6b9"),
+                            Id = new Guid("e9bb0ec3-c98a-45a4-beb2-b27f9f7427a3"),
                             Name = "Basketball"
                         },
                         new
                         {
-                            Id = new Guid("a434ac8a-2703-468f-987f-96632497aa1d"),
+                            Id = new Guid("838c1e25-583e-463f-b9f2-4a3a5068786e"),
                             Name = "Cricket"
                         },
                         new
                         {
-                            Id = new Guid("f978a529-f24c-4f1e-a55d-58973e0bce1b"),
+                            Id = new Guid("0802646b-0c50-47ec-bda7-720d6e727255"),
                             Name = "Volleyball"
                         },
                         new
                         {
-                            Id = new Guid("0906101d-f490-4c0e-8463-197c353a9f98"),
+                            Id = new Guid("24c592a3-182f-4fca-bde8-314912071ae1"),
                             Name = "Rugby"
                         },
                         new
                         {
-                            Id = new Guid("76fed4ec-023c-489c-9d1e-bb0c42186a72"),
+                            Id = new Guid("a4ff0498-a348-4c88-8c55-678ed8619b47"),
                             Name = "American Football"
                         },
                         new
                         {
-                            Id = new Guid("df1836ca-05aa-4c0d-b696-61a1224b10b3"),
+                            Id = new Guid("93e53800-4c01-4830-af57-82ed2cd930be"),
                             Name = "Baseball"
                         },
                         new
                         {
-                            Id = new Guid("a2e993e9-5b8a-40b6-95e3-f9042a06862e"),
+                            Id = new Guid("a1a8297d-6a3c-4f4f-a333-87ca5fbf282d"),
                             Name = "Ice Hockey"
                         },
                         new
                         {
-                            Id = new Guid("4006b960-2a38-456d-944c-ea683359dd39"),
+                            Id = new Guid("5c9f3abc-4548-4e81-9250-8e0dff6566c3"),
                             Name = "Field Hockey"
                         },
                         new
                         {
-                            Id = new Guid("d7366526-7883-4b1d-9436-592c67f5da20"),
+                            Id = new Guid("4a6e7ec9-f8fc-48e0-ac14-88adb34c256a"),
                             Name = "Handball"
                         },
                         new
                         {
-                            Id = new Guid("36488345-a190-479e-b7f9-98ae6b746187"),
+                            Id = new Guid("86e0dcdf-afc4-4a54-bace-8d73b3ec290d"),
                             Name = "Water Polo"
                         },
                         new
                         {
-                            Id = new Guid("9b6a01bc-de0c-423d-b56b-cfb8ccf89b31"),
+                            Id = new Guid("d2a07c19-e15a-4ab6-9540-69f5aacb0a8d"),
                             Name = "Softball"
                         },
                         new
                         {
-                            Id = new Guid("9cd9682d-04ea-4383-bcc9-d33a1eec63c3"),
+                            Id = new Guid("988127e0-fa33-437a-b885-155374b4f5fb"),
                             Name = "Frisbee"
                         },
                         new
                         {
-                            Id = new Guid("a5c7abad-734a-4fc1-8206-853d42b4b7ed"),
+                            Id = new Guid("06d44d89-a439-46c6-8598-50fe1cc4dbbc"),
                             Name = "Lacrosse"
                         },
                         new
                         {
-                            Id = new Guid("5ac6836a-2f19-4d4b-a321-fbb0156bf926"),
+                            Id = new Guid("bde24431-7fed-4dc3-ad44-29940eb62780"),
                             Name = "Tennis"
                         },
                         new
                         {
-                            Id = new Guid("49764de6-674e-44c4-a070-7f2304dfe972"),
+                            Id = new Guid("8e45b516-fb06-4d10-bd5d-e99a22aa5926"),
                             Name = "Table Tennis"
                         },
                         new
                         {
-                            Id = new Guid("d6ea1d11-77d1-4051-ba72-141d02853181"),
+                            Id = new Guid("6a832d3c-ce78-43d5-9d95-3aa470e7be86"),
                             Name = "Badminton"
                         });
                 });
@@ -497,25 +517,25 @@ namespace Cronotus.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ceb86f51-ff97-49b9-984d-62f8f1c571a4",
+                            Id = "3afbd140-7c77-49b0-be48-24f7c7af4eb8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5691d6a2-34d3-46bc-ab6f-3c1eaa924844",
+                            Id = "6e688725-ba77-476c-812f-124fedc188cf",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         },
                         new
                         {
-                            Id = "9886fba0-41be-4649-b62e-0dbe7572b882",
+                            Id = "5acdefa4-db1b-4779-a0a0-b3d9787b1fa2",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         },
                         new
                         {
-                            Id = "54e8bcb3-747a-4f11-a144-638df5b2a67a",
+                            Id = "27004d6c-56cc-422f-8e31-d326037e221f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -661,6 +681,17 @@ namespace Cronotus.Migrations
                     b.Navigation("Organizer");
 
                     b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Entities.Models.EventPicture", b =>
+                {
+                    b.HasOne("Entities.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("Entities.Models.EventReview", b =>

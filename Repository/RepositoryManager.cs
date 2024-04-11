@@ -11,6 +11,7 @@ namespace Repository
         private readonly Lazy<ISportRepositry> _sportRepository;
         private readonly Lazy<IPlayerRepository> _playerRepository;
         private readonly Lazy<IPlayerOnEventRepository> _playerOnEventRepository;
+        private readonly Lazy<IEventPictureRepository> _eventPictureRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -21,6 +22,7 @@ namespace Repository
             _sportRepository = new Lazy<ISportRepositry>(() => new SportRepository(_repositoryContext));
             _playerRepository = new Lazy<IPlayerRepository>(() => new PlayerRepository(_repositoryContext));
             _playerOnEventRepository = new Lazy<IPlayerOnEventRepository>(() => new PlayerOnEventRepository(_repositoryContext));
+            _eventPictureRepository = new Lazy<IEventPictureRepository>(() => new EventPictureRepository(_repositoryContext));
         }
 
         public IProfileRepository Profile => _profileRepository.Value;
@@ -29,6 +31,7 @@ namespace Repository
         public ISportRepositry Sport => _sportRepository.Value;
         public IPlayerRepository Player => _playerRepository.Value;
         public IPlayerOnEventRepository PlayerOnEvent => _playerOnEventRepository.Value;
+        public IEventPictureRepository EventPicture => _eventPictureRepository.Value;
         public void Save() => _repositoryContext.SaveChanges();
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
     }

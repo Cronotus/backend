@@ -120,6 +120,31 @@
             <response code="500">An internal server error occured causing the request to be unsucessful.</response>
             <returns>A true flag with logical value.</returns>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.UploadPicturesToEvent(System.Guid,Microsoft.AspNetCore.Http.IFormFileCollection)">
+            <summary>
+            Uploads multiple pictures to blob storage for a given event
+            </summary>
+            <param name="eventId"></param>
+            <param name="files"></param>
+            <returns>No return type</returns>
+            <exception cref="T:Shared.Exceptions.BlobFileNullException"></exception>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.GetPicturesForEvent(System.Guid)">
+            <summary>
+            Gets all pictures for a given event
+            </summary>
+            <param name="eventId"></param>
+            <returns>A list of the pictures for the corresponding event</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.DeletePictureForEvent(System.Guid,System.Guid)">
+            <summary>
+            Deletes a picture for a given event
+            </summary>
+            <param name="eventId"></param>
+            <param name="eventPictureId"></param>
+            <returns>No return type</returns>
+            <exception cref="T:Shared.Exceptions.EventPictureNotFoundException"></exception>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.OrganizerController.CreateOrganizer(Shared.DataTransferObjects.OrganizerForCreationDto)">
             <summary>
             Creates a new organizer

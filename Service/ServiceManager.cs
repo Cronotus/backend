@@ -17,6 +17,7 @@ namespace Service
         private readonly Lazy<ISportService> _sportService;
         private readonly Lazy<IPlayerService> _playerService;
         private readonly Lazy<IPlayerOnEventService> _playerOnEventService;
+        private readonly Lazy<IEventPictureService> _eventPictureService;
 
         public ServiceManager(
             IRepositoryManager repositoryManager,
@@ -32,6 +33,7 @@ namespace Service
             _sportService = new Lazy<ISportService>(() => new SportService(repositoryManager, logger, mapper));
             _playerService = new Lazy<IPlayerService>(() => new PlayerService(repositoryManager, userManager, logger, mapper));
             _playerOnEventService = new Lazy<IPlayerOnEventService>(() => new PlayerOnEventService(repositoryManager, userManager, logger, mapper));
+            _eventPictureService = new Lazy<IEventPictureService>(() => new EventPictureService(repositoryManager, logger));
         }
 
         public IProfileService ProfileService => _profileService.Value;
@@ -41,5 +43,6 @@ namespace Service
         public ISportService SportService => _sportService.Value;
         public IPlayerService PlayerService => _playerService.Value;
         public IPlayerOnEventService PlayerOnEventService => _playerOnEventService.Value;
+        public IEventPictureService EventPictureService => _eventPictureService.Value;
     }
 }

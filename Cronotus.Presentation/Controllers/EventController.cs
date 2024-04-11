@@ -167,18 +167,69 @@ namespace Cronotus.Presentation.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Uploads multiple pictures to blob storage for a given event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="files"></param>
+        /// <returns>No return type</returns>
+        /// <exception cref="BlobFileNullException"></exception>
         [HttpPost("{eventId:guid}/upload-pictures")]
         public async Task<IActionResult> UploadPicturesToEvent(Guid eventId, [FromForm] IFormFileCollection files)
         {
+            var eventEntity = await _serviceManager.EventService.GetEventAsync(eventId, trackChanges: true);
+            if (eventEntity is null)
+                throw new EventNotFoundException($"Event by id: {eventId} does not exist in the database.");
+
             if (files.Count == 0)
                 throw new BlobFileNullException("No files were uploaded.");
 
-            var responses = new List<string?>();
             foreach (var file in files)
             {
-                responses.Add(await _blobService.UploadFileAsync(file, eventId.ToString()));
+                var currentUrl = await _blobService.UploadFileAsync(file, eventId.ToString());
+                var eventPictureToCreate = new EventPictureForCreationDto
+                {
+                    EventId = eventId,
+                    PictureUrl = currentUrl
+                };
+                _serviceManager.EventPictureService.CreateEventPicture(eventPictureToCreate);
             }
-            return Ok(responses);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Gets all pictures for a given event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns>A list of the pictures for the corresponding event</returns>
+        [HttpGet("{eventId:guid}/pictures")]
+        public async Task<IActionResult> GetPicturesForEvent(Guid eventId)
+        {
+            var result = await _serviceManager.EventPictureService.GetAllEventPicturesAsync(eventId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Deletes a picture for a given event
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="eventPictureId"></param>
+        /// <returns>No return type</returns>
+        /// <exception cref="EventPictureNotFoundException"></exception>
+        [HttpDelete("{eventId:guid}/picture/{eventPictureId:guid}")]
+        public async Task<IActionResult> DeletePictureForEvent(Guid eventId, Guid eventPictureId)
+        {
+            var eventPictureToDelete = await _serviceManager.EventPictureService.GetEventPictureAsync(eventPictureId);
+            if (eventPictureToDelete is null)
+                throw new EventPictureNotFoundException($"EventPicture by id: {eventPictureId} does not exist in the database.");
+
+            var fileName = Shared.Helpers.ExtractFileNameFromProfilePictureUri(eventPictureToDelete.PictureUrl!);
+
+            await _blobService.DeleteFileAsync(fileName, eventId.ToString());
+            await _serviceManager.EventPictureService.DeleteEventPicture(eventPictureId);
+
+            return NoContent();
         }
     }
 }
