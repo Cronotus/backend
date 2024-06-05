@@ -8,6 +8,8 @@ using Service;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.Exceptions;
+using Shared.RequestFeatures;
+using System.Text.Json;
 
 namespace Cronotus.Presentation.Controllers
 {
@@ -33,10 +35,12 @@ namespace Cronotus.Presentation.Controllers
         /// <returns>An array of event previews</returns>
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetAllEvents()
+        public async Task<IActionResult> GetAllEvents([FromQuery] EventParameters eventParameters)
         {
-            var events = await _serviceManager.EventService.GetAllEventsAsync(trackChanges: false);
-            return Ok(events);
+            var pagedResult = await _serviceManager.EventService.GetAllEventsAsync(eventParameters, trackChanges: false);
+            Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+
+            return Ok(pagedResult.res);
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.Exceptions;
+using Shared.RequestFeatures;
 
 namespace Service
 {
@@ -101,32 +102,23 @@ namespace Service
             _repository.Save();
         }
 
-        public async Task<IEnumerable<EventPreviewForReturnDto>> GetAllEventsAsync(bool trackChanges)
+        public async Task<(IEnumerable<EventPreviewForReturnDto> res, MetaData metaData)> GetAllEventsAsync(EventParameters eventParameters, bool trackChanges)
         {
-            try
-            {
-                var events = await _repository.Event.GetAllEventsAsync(trackChanges);
+            var eventsWithMetaData = await _repository.Event.GetAllEventsAsync(eventParameters, false);
 
-                var result = new List<EventPreviewForReturnDto>();
-                foreach(var e in events)
+            var result = new List<EventPreviewForReturnDto>();
+            foreach(var e in eventsWithMetaData)
+            {
+                var temp = new EventPreviewForReturnDto
                 {
-                    var temp = new EventPreviewForReturnDto
-                    {
-                        Id = e.Id,
-                        Name = e.Name!,
-                        StartDate = e.StartDate,
-                    };
-                    result.Add(temp);
-                }
+                    Id = e.Id,
+                    Name = e.Name!,
+                    StartDate = e.StartDate,
+                };
+                result.Add(temp);
+            }
 
-                return result;
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(GetAllEventsAsync)} method: {ex}");
-                throw;
-            }
+            return (res: result, metaData: eventsWithMetaData.MetaData);
         }
 
         public async Task<EventForReturnDto?> GetEventAsync(Guid eventId, bool trackChanges)

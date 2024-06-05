@@ -1,10 +1,11 @@
 ﻿using Entities.Models;
+using Shared.RequestFeatures;
 
 namespace Contracts
 {
     public interface IEventRepository
     {
-        Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges);
+        Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters, bool trackChanges);
         Task<IEnumerable<Event>> GetEventsByOrganizerAsync(Guid organizerId, bool trackChanges);
         Task<Event?> GetEventAsync(Guid eventId, bool trackChanges);
         Event? GetEvent(Guid eventId, bool trackChanges);
