@@ -105,6 +105,11 @@ namespace Cronotus.Extensions
                 _logger.LogError($"Request failed on {nameof(NoProfileCoverPictureException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
                 await HandleExceptionAsync(httpContext, StatusCodes.Status409Conflict, ex.Message);
             }
+            catch (InvalidDateRangeException ex)
+            {
+                _logger.LogError($"Request failed on {nameof(InvalidDateRangeException)} with error {ex.Message} with code {StatusCodes.Status400BadRequest}");
+                await HandleExceptionAsync(httpContext, StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Request failed on {nameof(Exception)} with error {ex.Message} with code {StatusCodes.Status500InternalServerError}");

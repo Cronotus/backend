@@ -104,6 +104,10 @@ namespace Service
 
         public async Task<(IEnumerable<EventPreviewForReturnDto> res, MetaData metaData)> GetAllEventsAsync(EventParameters eventParameters, bool trackChanges)
         {
+            if (!eventParameters.validDatesRange)
+            {
+                throw new InvalidDateRangeException("Invalid date range. The start date must be less than the end date.");
+            }
             var eventsWithMetaData = await _repository.Event.GetAllEventsAsync(eventParameters, false);
 
             var result = new List<EventPreviewForReturnDto>();

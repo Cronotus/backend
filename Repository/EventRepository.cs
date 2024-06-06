@@ -17,9 +17,24 @@ namespace Repository
 
         public async Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters, bool trackChanges)
         {
-            var events = await FindAll(trackChanges)
-                .OrderBy(e => e.StartDate)
-                .ToListAsync();
+            List<Event>? events;
+            if (eventParameters.SportId is null)
+            {
+                events = await FindByCondition(
+                    e => (e.StartDate >= eventParameters.StartDate) && (e.StartDate <= eventParameters.EndDate), trackChanges)
+                    .OrderBy(e => e.StartDate)
+                    .ToListAsync();
+
+            } else
+            {
+                events = await FindByCondition(
+                    e => (e.SportId.ToString() == eventParameters.SportId.ToString()) &&
+                      (e.StartDate >= eventParameters.StartDate) &&
+                      (e.StartDate <= eventParameters.EndDate),
+            trackChanges)
+            .OrderBy(e => e.StartDate)
+            .ToListAsync();
+            }
 
             return PagedList<Event>.ToPagedList(events, eventParameters.PageNumber, eventParameters.PageSize);
         }
