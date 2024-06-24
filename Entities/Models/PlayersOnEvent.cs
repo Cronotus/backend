@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.Models
 {
     [Table("PlayersOnEvents")]
-    [Keyless]
     public class PlayersOnEvent
     {
+        [Column("InstanceId")]
+        public Guid Id { get; set; }
+
         [ForeignKey(nameof(Player))]
         public Guid? PlayerId { get; set; }
 

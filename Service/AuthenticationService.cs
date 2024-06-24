@@ -11,6 +11,8 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Shared.Exceptions;
+using Microsoft.Extensions.Primitives;
 
 namespace Service
 {
@@ -21,14 +23,16 @@ namespace Service
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly IRepositoryManager _repository;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationService(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationService(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IRepositoryManager repository) 
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
+            _repository = repository;
         }
 
         public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
@@ -39,6 +43,23 @@ namespace Service
             {
                 await _userManager.AddToRolesAsync(user, ["User"]);
             }
+
+            var organizerEntityToCreate = new Organizer
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id
+            };
+            _repository.Organizer.CreateOrganizer(organizerEntityToCreate);
+            await _userManager.AddToRolesAsync(user, ["Organizer"]);
+
+            var playerEntityToCreate = new Player
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id
+            };
+
+            _repository.Player.CreatePlayer(playerEntityToCreate);
+            await _userManager.AddToRolesAsync(user, ["Player"]);
 
             return result;
         }
@@ -94,6 +115,18 @@ namespace Service
             if (!string.IsNullOrWhiteSpace(id))
             {
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, id));
+            }
+
+            var organizerEntity = await _repository.Organizer.GetOrganizerByUserIdAsync(id, false);
+            if (organizerEntity is not null)
+            {
+                claims.Add(new Claim("OrganizerNameIdentifier", organizerEntity.Id.ToString()));
+            }
+
+            var playerEntity = await _repository.Player.GetPlayerByUserIdAsync(new Guid(id), false);
+            if (playerEntity is not null)
+            {
+                claims.Add(new Claim("PlayerNameIdentifier", playerEntity.Id.ToString()));
             }
 
             var roles = await _userManager.GetRolesAsync(_user!);

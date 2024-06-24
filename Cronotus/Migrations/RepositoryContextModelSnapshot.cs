@@ -62,6 +62,9 @@ namespace Cronotus.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Ended")
                         .HasColumnType("bit");
 
@@ -91,6 +94,26 @@ namespace Cronotus.Migrations
                     b.HasIndex("SportId");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Entities.Models.EventPicture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("EventPictureId");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("EventPictures");
                 });
 
             modelBuilder.Entity("Entities.Models.EventReview", b =>
@@ -164,11 +187,18 @@ namespace Cronotus.Migrations
 
             modelBuilder.Entity("Entities.Models.PlayersOnEvent", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("InstanceId");
+
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("PlayerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
@@ -261,6 +291,93 @@ namespace Cronotus.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sports");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cc686fad-f71b-4a5f-b2b6-ccbb369e27f2"),
+                            Name = "Football"
+                        },
+                        new
+                        {
+                            Id = new Guid("e9bb0ec3-c98a-45a4-beb2-b27f9f7427a3"),
+                            Name = "Basketball"
+                        },
+                        new
+                        {
+                            Id = new Guid("838c1e25-583e-463f-b9f2-4a3a5068786e"),
+                            Name = "Cricket"
+                        },
+                        new
+                        {
+                            Id = new Guid("0802646b-0c50-47ec-bda7-720d6e727255"),
+                            Name = "Volleyball"
+                        },
+                        new
+                        {
+                            Id = new Guid("24c592a3-182f-4fca-bde8-314912071ae1"),
+                            Name = "Rugby"
+                        },
+                        new
+                        {
+                            Id = new Guid("a4ff0498-a348-4c88-8c55-678ed8619b47"),
+                            Name = "American Football"
+                        },
+                        new
+                        {
+                            Id = new Guid("93e53800-4c01-4830-af57-82ed2cd930be"),
+                            Name = "Baseball"
+                        },
+                        new
+                        {
+                            Id = new Guid("a1a8297d-6a3c-4f4f-a333-87ca5fbf282d"),
+                            Name = "Ice Hockey"
+                        },
+                        new
+                        {
+                            Id = new Guid("5c9f3abc-4548-4e81-9250-8e0dff6566c3"),
+                            Name = "Field Hockey"
+                        },
+                        new
+                        {
+                            Id = new Guid("4a6e7ec9-f8fc-48e0-ac14-88adb34c256a"),
+                            Name = "Handball"
+                        },
+                        new
+                        {
+                            Id = new Guid("86e0dcdf-afc4-4a54-bace-8d73b3ec290d"),
+                            Name = "Water Polo"
+                        },
+                        new
+                        {
+                            Id = new Guid("d2a07c19-e15a-4ab6-9540-69f5aacb0a8d"),
+                            Name = "Softball"
+                        },
+                        new
+                        {
+                            Id = new Guid("988127e0-fa33-437a-b885-155374b4f5fb"),
+                            Name = "Frisbee"
+                        },
+                        new
+                        {
+                            Id = new Guid("06d44d89-a439-46c6-8598-50fe1cc4dbbc"),
+                            Name = "Lacrosse"
+                        },
+                        new
+                        {
+                            Id = new Guid("bde24431-7fed-4dc3-ad44-29940eb62780"),
+                            Name = "Tennis"
+                        },
+                        new
+                        {
+                            Id = new Guid("8e45b516-fb06-4d10-bd5d-e99a22aa5926"),
+                            Name = "Table Tennis"
+                        },
+                        new
+                        {
+                            Id = new Guid("6a832d3c-ce78-43d5-9d95-3aa470e7be86"),
+                            Name = "Badminton"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -320,6 +437,12 @@ namespace Cronotus.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfileCoverImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
@@ -394,25 +517,25 @@ namespace Cronotus.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1e385b2b-7c20-403e-a9bc-28049baa71d2",
+                            Id = "3afbd140-7c77-49b0-be48-24f7c7af4eb8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e6923d9b-1197-4508-9e10-42c12f335aa1",
+                            Id = "6e688725-ba77-476c-812f-124fedc188cf",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         },
                         new
                         {
-                            Id = "18a29c6c-2400-4335-8359-f8f7e75dc7f1",
+                            Id = "5acdefa4-db1b-4779-a0a0-b3d9787b1fa2",
                             Name = "Player",
                             NormalizedName = "PLAYER"
                         },
                         new
                         {
-                            Id = "127c0ed7-d45e-49d9-82fb-1d4bd81e88a2",
+                            Id = "27004d6c-56cc-422f-8e31-d326037e221f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -558,6 +681,17 @@ namespace Cronotus.Migrations
                     b.Navigation("Organizer");
 
                     b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Entities.Models.EventPicture", b =>
+                {
+                    b.HasOne("Entities.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("Entities.Models.EventReview", b =>

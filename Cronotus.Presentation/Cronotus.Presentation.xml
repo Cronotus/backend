@@ -20,6 +20,172 @@
             <response code="200">Login was successfull</response>
             <response code="401">The credentials were incorrect thus the login failed</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.BlobController.GetAllBlobNames(System.String)">
+            <summary>
+            Gets all blob names in a container
+            </summary>
+            <param name="containerName"></param>
+            <returns>A list of the available blob names</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.BlobController.UploadImage(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            Uploads an image to a container
+            </summary>
+            <param name="file"></param>
+            <param name="containerName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.GetAllEvents(Shared.RequestFeatures.EventParameters)">
+            <summary>
+            Returns a preview of all events
+            </summary>
+            <response code="200">The request was successful.</response>
+            <response code="500">There was an internal server error thus the request was unsuccessful.</response>
+            <returns>An array of event previews</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.GetEvent(System.Guid)">
+            <summary>
+            Returns a single event by id
+            </summary>
+            <param name="id"></param>
+            <response code="200">The request was successful and the event by the given id was returned.</response>
+            <response code="404">The event by the given id was not found.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.CreateEvent(Shared.DataTransferObjects.EventForCreationDto)">
+            <summary>
+            Creates a new event
+            </summary>
+            <param name="eventDto"></param>
+            <response code="201">The event was successfully created.</response>
+            <response code="404">No sport/organizer was found to be bounded to event. Event creation failed.</response> 
+            <response code="400">The input object was not in acceptable form causing a bad request.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.DeleteEvent(System.Guid)">
+            <summary>
+            Deletes an event by id
+            </summary>
+            <param name="id"></param>
+            <response code="204">The event was deleted successfully.</response>
+            <response code="404">The event by the given id does not exist. Could not be deleted.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns></returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.PartiallyUpdateEvent(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Shared.DataTransferObjects.EventForUpdateDto})">
+            <summary>
+            Partially updates an event
+            </summary>
+            <param name="id"></param>
+            <param name="patchDoc"></param>
+            <response code="204">The request was successful and the entity got updated.</response>
+            <response code="400">The patch document was not sent correctly, the request was unsuccessful.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>No return object</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.SignUpPlayerToEvent(System.Guid,System.Guid)">
+            <summary>
+            Signs up a player to an event
+            </summary>
+            <param name="eventId"></param>
+            <param name="playerId"></param>
+            <response code="201">The player has been successfully signed up to the event.</response>
+            <response code="404">The event with the given id does not exist in the database.</response>
+            <response code="404">The player with the given id does not exist in the database.</response>
+            <response code="409">Could not sign up the player to the event because it has already ended and accepts no more participants.</response>
+            <response code="409">The player has already been signed up to the event.</response>
+            <response code="500">An internal server error occured causing the request to be unsuccessful.</response>
+            <returns>Player id along with target event id.</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.ResignPlayerFromEvent(System.Guid,System.Guid)">
+            <summary>
+            Resigns a player from an event
+            </summary>
+            <param name="eventId"></param>
+            <param name="playerId"></param>
+            <response code="204">The player has been successfully resigned from the event.</response>
+            <response code="409">The player was not previously signed up to the event. Can not resign.</response>
+            <response code="500">There was an internal server error causing the request to unsuccessful.</response>
+            <returns>No return object</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.CheckIfPlayerIsSignedUp(System.Guid,System.Guid)">
+            <summary>
+            Checks if a player is registered to a given event.
+            </summary>
+            <param name="eventId"></param>
+            <param name="playerId"></param>
+            <response code="200">Registration was checked and a flag was returned correspondingly.</response>
+            <response code="404">The event by the given id does not exist in the database.</response>
+            <response code="404">The player by the given id does not exist in the database.</response>
+            <response code="500">An internal server error occured causing the request to be unsucessful.</response>
+            <returns>A true flag with logical value.</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.UploadPicturesToEvent(System.Guid,Microsoft.AspNetCore.Http.IFormFileCollection)">
+            <summary>
+            Uploads multiple pictures to blob storage for a given event
+            </summary>
+            <param name="eventId"></param>
+            <param name="files"></param>
+            <returns>No return type</returns>
+            <exception cref="T:Shared.Exceptions.BlobFileNullException"></exception>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.GetPicturesForEvent(System.Guid)">
+            <summary>
+            Gets all pictures for a given event
+            </summary>
+            <param name="eventId"></param>
+            <returns>A list of the pictures for the corresponding event</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.EventController.DeletePictureForEvent(System.Guid,System.Guid)">
+            <summary>
+            Deletes a picture for a given event
+            </summary>
+            <param name="eventId"></param>
+            <param name="eventPictureId"></param>
+            <returns>No return type</returns>
+            <exception cref="T:Shared.Exceptions.EventPictureNotFoundException"></exception>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.OrganizerController.CreateOrganizer(Shared.DataTransferObjects.OrganizerForCreationDto)">
+            <summary>
+            Creates a new organizer
+            </summary>
+            <param name="organizerDto"></param>
+            <response code="201">The object was created successfully.</response>
+            <response code="400">Bad request sent. The request was not successful.</response>
+            <response code="404">User was not found in the database by the given id.</response>
+            <response code="409">The request was not successful because an organizer already exists with the given user id.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.OrganizerController.GetOrganizerByUserId(System.Guid)">
+            <summary>
+            Returns an organizer by user id
+            </summary>
+            <param name="userId"></param>
+            <response code="200">The request was successful.</response>
+            <response code="404">The was no organizer found by the given user id.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>A single organizer.</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.OrganizerController.GetEventsByOrganizer(System.Guid)">
+            <summary>
+            Returns events bounded by organizer id
+            </summary>
+            <param name="id"></param>
+            <response code="200">The request was successful.</response>
+            <response code="404">There was no organizer found in the database by the give id.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>A list of event previews</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.PlayerController.CreatePlayer(Shared.DataTransferObjects.PlayerForCreationDto)">
+            <summary>
+            Registers a new player
+            </summary>
+            <param name="playerDto"></param>
+            <response code="201">The request was successful and the user was registered as a player.</response>
+            <response code="404">There was no user found in the database by the given id. Could not register as player.</response>
+            <response code="409">The user by the given id is already registered as a player.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>No return object.</returns>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.ProfileController.GetProfile(System.Guid)">
             <summary>
             Gets a profile by id
@@ -40,6 +206,38 @@
             <response code="204">The request was successful and the object was partially updated.</response>
             <response code="400">The patch document is null, the update was not successful.</response>
         </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.UpdateProfilePicture(System.Guid,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Updates the profile picture of a user. If the user already has a profile picture, the old one is deleted.
+            </summary>
+            <param name="id">User id</param>
+            <param name="file">The picture file</param>
+            <returns>URI to the new profile picture</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfilePicture(System.Guid)">
+            <summary>
+            Deletes the profile picture of a user. If the user does not have a profile picture, an exception is thrown.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:Shared.Exceptions.NoProfilePictureException"></exception>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.UpdateProfileCoverImage(System.Guid,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Updates the profile cover image of a user. If the user already has a profile cover image, the old one is deleted.
+            </summary>
+            <param name="id"></param>
+            <param name="file"></param>
+            <returns>URI to the new cover image</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfileCoverImage(System.Guid)">
+            <summary>
+            Deletes the profile cover image of a user. If the user does not have a profile cover image, an exception is thrown.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:Shared.Exceptions.NoProfileCoverPictureException"></exception>
+        </member>
         <member name="M:Cronotus.Presentation.Controllers.ProfileController.DeleteProfile(System.Guid)">
             <summary>
             Deletes a profile by id
@@ -48,6 +246,24 @@
             <returns>No return object.</returns>
             <response code="204">The profile was deleted successfully.</response>
             <response code="500">There was an internal server error, the request was unsuccessful.</response>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.SportController.GetAllSports">
+            <summary>
+            Returns a list of all sports
+            </summary>
+            <response code="200">The request was successful.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>All sports.</returns>
+        </member>
+        <member name="M:Cronotus.Presentation.Controllers.SportController.GetSport(System.Guid)">
+            <summary>
+            Returns a single sport by id
+            </summary>
+            <param name="id"></param>
+            <response code="200">The request was successful and the sport was returned.</response>
+            <response code="404">There was no sport found by the given id.</response>
+            <response code="500">There was an internal server error causing the request to be unsuccessful.</response>
+            <returns>A single sport.</returns>
         </member>
         <member name="M:Cronotus.Presentation.Controllers.TokenController.Refresh(Shared.DataTransferObjects.TokenDto)">
             <summary>

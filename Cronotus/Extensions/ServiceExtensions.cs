@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using Azure.Storage.Blobs;
+using Contracts;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,7 +23,8 @@ namespace Cronotus.Extensions
                 options.AddPolicy("CorsPolicy", builder => 
                     builder.AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("X-Pagination"));
             });
 
         public static void ConfigureIIS(this IServiceCollection services) =>
@@ -127,8 +129,10 @@ namespace Cronotus.Extensions
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 swg.IncludeXmlComments(xmlPath);
             });
-
         }
+
+        public static void ConfigureErrorHandlingMiddleware(this IApplicationBuilder app) =>
+            app.UseMiddleware<ExceptionMiddleware>();
 
     }
 }

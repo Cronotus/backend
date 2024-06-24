@@ -4,9 +4,7 @@ namespace Entities.ErrorModel
 {
     public class ErrorDetails
     {
-        public int StatusCode { get; init; }
-        public string? Message { get; init; } = null!;
-        public override string ToString() =>
-            JsonSerializer.Serialize(this);
+        public string? message { get; init; } = null!;
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

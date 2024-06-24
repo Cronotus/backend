@@ -15,6 +15,7 @@ namespace Repository
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new SportConfiguration());
         }
 
         public DbSet<Comment> Comments { get; set; }
@@ -29,5 +30,6 @@ namespace Repository
         public DbSet<Review> Reviews { get; set; }
         public DbSet<UserReview> UserReviews { get; set; }
         public DbSet<Sport> Sports { get; set; }
+        public DbSet<EventPicture> EventPictures { get; set; }
     }
 }

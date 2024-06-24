@@ -11,6 +11,18 @@ namespace Cronotus
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<ProfileForUpdateDto, User>();
             CreateMap<ProfileForUpdateDto, User>().ReverseMap();
+            CreateMap<EventPreviewForReturnDto, Event>();
+            CreateMap<EventForReturnDto, Event>();
+            CreateMap<OrganizerForCreationDto, Organizer>();
+            CreateMap<OrganizerForCreationDto, Organizer>().ReverseMap();
+            CreateMap<OrganizerDto,  Organizer>().ReverseMap();
+            CreateMap<OrganizerDto, Organizer>();
+            CreateMap<EventForUpdateDto, Event>();
+            CreateMap<EventForUpdateDto, Event>().ReverseMap();
+            CreateMap<SportForReturnDto, Sport>();
+            CreateMap<SportForReturnDto, Sport>().ReverseMap();
+            CreateMap<PlayersOnEvent, PlayerOnEventDto>();
+            CreateMap<PlayersOnEvent, PlayerOnEventDto>().ReverseMap();
         }
     }
 }
